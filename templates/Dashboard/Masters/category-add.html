@@ -1,0 +1,58 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block page %} 
+    <li class="breadcrumb-item active" aria-current="page">Add Category</li>
+{% endblock page %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- BEGIN: Notification -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="intro-y col-span-11 alert alert-{{ message.tags }} alert-dismissible show flex items-center mb-6 mt-5 text-white" role="alert">
+            <span><i data-lucide="info" class="w-4 h-4 mr-2"></i></span>
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <!-- BEGIN: Notification -->
+
+    <div class="intro-y box py-10 sm:py-10 mt-5">
+
+        <h2 class="text-primary text-center font-medium" style=" font-size: 30px;">Add Category</h2>
+        
+        <div class="px-3 sm:px-10 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
+                    <div class="intro-y col-span-12 sm:col-span-4">
+                        <label for="input-wizard-2" class="form-label">Category Name</label>
+                        <input name="name" id="category-name" type="text" class="form-control" placeholder="Enter category name here" required maxlength="100">
+                        <div id="error" class="text-danger mt-2" style="display: none;">Category already exists</div>
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-4">
+                        <label for="input-wizard-2" class="form-label">Reference</label>
+                        <input name="category_id" value="{{reference}}" type="text" class="form-control" readonly maxlength="25">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-4">
+                        <label for="input-wizard-2" class="form-label">Note</label>
+                        <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+                    </div>
+
+                    <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+                        <button id="submit-btn" class="btn btn-primary w-24 ml-2" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
