@@ -17,6 +17,14 @@
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="{% static 'dashboard/css/app.css' %}" />
         <!-- END: CSS Assets-->
+
+        <style>
+            .file {
+                border: solid 1px;
+                padding: 5px;
+                border-color: rgb(var(--color-slate-200) / var(--tw-border-opacity));
+            }
+        </style>
     </head>
     <!-- END: Head -->
     <body class="py-5">
@@ -50,7 +58,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="menu menu--active">
+                                <a href="{% url 'staffs' %}" class="menu menu--active">
                                     <div class="menu__icon"> <i data-lucide="activity"></i> </div>
                                     <div class="menu__title"> Staffs </div>
                                 </a>
@@ -274,13 +282,35 @@
                             </a>
                         </li>
                         <li>
-                            <a href="" class="top-menu">
-                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                            <a href="{% url 'staffs' %}" class="top-menu">
+                                <div class="top-menu__icon"> <i data-lucide="users"></i> </div>
                                 <div class="top-menu__title"> Staffs </div>
                             </a>
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="javascript:;" class="top-menu">
+                        <div class="top-menu__icon"> <i data-lucide="box"></i> </div>
+                        <div class="top-menu__title"> Projects <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a href="" class="top-menu">
+                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="top-menu__title"> Start New Project </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="top-menu">
+                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="top-menu__title"> Manage Projects </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="javascript:;" class="top-menu">
                         <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
@@ -333,6 +363,7 @@
         <!-- EXTRA JS STARTS -->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="{% static 'dashboard/extrajs/core.js' %}"></script>
+        <script src="{% static 'dashboard/extrajs/block.js' %}"></script>
         <!-- EXTRA JS ENDS-->
         <!-- END: JS Assets-->
     </body>

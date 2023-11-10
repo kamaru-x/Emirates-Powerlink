@@ -5,4 +5,4 @@ from U_Auth.models import User
 
 @admin.register(User)
 class UserModelAdmin(admin.ModelAdmin):
-    list_display = ['id','username','is_superuser','is_staff','first_name','Mobile','email','Staff_ID']
+    list_display = ['username','first_name','is_superuser','is_staff','is_active','Staff_ID','Mobile','email']

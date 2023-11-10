@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block page %} 
-    <li class="breadcrumb-item active" aria-current="page">Manage Categories</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Staffs</li>
 {% endblock page %}
 
 {% block content %}
@@ -21,74 +21,93 @@
     {% endif %}
     <!-- BEGIN: Notification -->
 
-    <h2 class="text-primary text-center font-medium mt-10" style=" font-size: 30px;">Manage Categories</h2>
+    <h2 class="text-primary text-center font-medium mt-10" style=" font-size: 30px;">Manage Staffs</h2>
     <!-- BEGIN: Weekly Top Products -->
     <div class="col-span-12 mt-6 border-t border-dark pt-5">
         <div class="intro-y block sm:flex items-center h-10">
             <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
                 <button class="btn btn-primary box flex items-center text-slate-600 dark:text-slate-300"> <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to Excel </button>
-                <a href="{% url 'add-category' %}">
-                    <button class="btn btn-primary ml-3">Add New Category</button>
+                <a href="{% url 'add-staff' %}">
+                    <button class="btn btn-primary ml-3">Add New Staff</button>
                 </a>    
             </div>
         </div>
-        {% if categories %}
-            <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
+        <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
+            {% if staffs %}
                 <table class="table table-report sm:mt-2">
                     <thead>
                         <tr>
                             <th class="text-center whitespace-nowrap">SL NO</th>
                             <th class="text-center whitespace-nowrap">NAME</th>
-                            <th class="text-center whitespace-nowrap">REFERENCE</th>
-                            <th class="text-center whitespace-nowrap">NOTE</th>
-                            <th class="text-center whitespace-nowrap">ADDED DATE</th>
+                            <th class="text-center whitespace-nowrap">IMAGES</th>
+                            <th class="text-center whitespace-nowrap">STAFF ID</th>
+                            <th class="text-center whitespace-nowrap">JOB ROLE</th>
+                            <th class="text-center whitespace-nowrap">STAUS</th>
                             <th class="text-center whitespace-nowrap">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for category in categories %}
+                        {% for staff in staffs %}
                             <tr class="intro-x">
+                                <td class="text-center">{{ forloop.counter }}</td>
                                 <td class="text-center">
-                                    {{ forloop.counter }}
+                                    <a href="" class="font-medium whitespace-nowrap text-primary">{{ staff.first_name }}</a> 
                                 </td>
-                                <td class="text-center whitespace-nowrap">
-                                    <a href="" class="font-medium text-primary">{{ category.Name }}</a>
+                                <td class="flex justify-center">
+                                    <div class="w-10 h-10 image-fit zoom-in">
+                                        {% if staff.Image %}
+                                            <img alt="" class="rounded-full" src="{{ staff.Image.url }}">
+                                        {% else %}
+                                            <img alt="" class="rounded-full" src="{% static 'dashboard/images/profile.jpg' %}">
+                                        {% endif %}
+                                    </div>
                                 </td>
-                                <td class="text-center">
-                                    {{ category.Reference }} 
-                                </td>
-                                <td class="text-center">{{ category.Note }}</td>
-                                <td class="text-center">{{ category.Added_Date | date:'d M Y' }}</td>
+                                <td class="text-center">{{ staff.Staff_ID }}</td>
+                                <td class="text-center">{{ staff.Job_Role }}</td>
+
+                                {% if staff.is_active %}
+                                    <td class="text-center text-success">ACTIVE</td>
+                                {% else %}
+                                    <td class="text-center text-danger">INACTIVE</td>
+                                {% endif %}
+
                                 <td class="table-report__action w-48">
                                     <div class="flex justify-center items-center">
-                                        <!-- <a class="flex items-center mr-3 text-success" href=""> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a> -->
-                                        <a class="flex items-center mr-3 text-primary" href="{% url 'edit-category' category.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
-                                        <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
-                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                        <a class="flex items-center mr-3 text-success" href="{% url 'staff-details' staff.username %}" title="view"> 
+                                            <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
                                         </a>
+                                        <a class="flex items-center mr-3 text-primary" href="{% url 'edit-staff' staff.username %}" title="edit"> 
+                                            <i data-lucide="edit" class="w-4 h-4 mr-1"></i>
+                                        </a>
+
+                                        {% if staff.is_active %}
+                                            <a class="flex items-center text-danger" onclick="deactivate_staff('{{ staff.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="dectivate"> 
+                                                <i data-lucide="x-circle" class="w-4 h-4 mr-1"></i>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-        {% else %}
-            <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
-                <table class="table table-report -mt-2">
-                    <tbody>
-                        <tr class="intro-x width"> 
-                            <td class=" width" style="width:100%;">
-                                <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
-                                    background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
-                                </i>
-                            <div style="text-align: center;">No data available!</div>
-                            </td>   
-                        </tr>    
-                    </tbody>
-                </table>
-            </div>
-        {% endif %}
+            {% else %}
+                <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
+                    <table class="table table-report -mt-2">
+                        <tbody>
+                            <tr class="intro-x width"> 
+                                <td class=" width" style="width:100%;">
+                                    <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
+                                        background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
+                                    </i>
+                                <div style="text-align: center;">No data available!</div>
+                                </td>   
+                            </tr>    
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
         <div class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3">
             <nav class="w-full sm:w-auto sm:mr-auto">
                 <ul class="pagination">
@@ -127,17 +146,17 @@
     <div class="modal-dialog">
         <form action="" method="post">
             {% csrf_token %}
-            <input type="hidden" name="category_id" id="category_id">
+            <input type="hidden" name="staff_id" id="staff_id">
             <div class="modal-content">
                 <div class="modal-body p-0">
                     <div class="p-5 text-center">
                         <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
                         <div class="text-3xl mt-5">Are you sure?</div>
-                        <div class="text-slate-500 mt-2">Do you really want to delete these records? <br>This process cannot be undone.</div>
+                        <div class="text-slate-500 mt-2">Do you really want to deactivate this user ? <br>This process cannot be undone.</div>
                     </div>
                     <div class="px-5 pb-8 text-center">
                         <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
-                        <button type="submit" class="btn btn-danger w-24">Delete</button>
+                        <button type="submit" class="btn btn-danger w-24">Deactivate</button>
                     </div>
                 </div>
             </div>
@@ -148,8 +167,8 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
-    function delete_category(category_id){
-        $('#category_id').val(category_id)
+    function deactivate_staff(staff_id){
+        $('#staff_id').val(staff_id)
     }
 </script>
 
