@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from Core.models import Category
+from Core.models import Category,Product
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -225,3 +225,88 @@ def edit_staff(request,username):
     }
 
     return render(request,'Dashboard/Masters/staff-edit.html',context)
+
+#----------------------------------- PRODUCTS -----------------------------------#
+
+@login_required
+def products(request):
+    products = Product.objects.all().order_by('-id')
+
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = Product.objects.get(id=product_id)
+        product.delete()
+
+        return redirect('products')
+
+    context = {
+        'products' : products
+    }
+    return render(request,'Dashboard/Masters/products.html',context)
+
+#----------------------------------- ADD PRODUCT -----------------------------------#
+
+@login_required
+def add_product(request):
+    categories = Category.objects.all()
+    last_product = Product.objects.last()
+
+    if last_product:
+        reference = f'PRODUCT-00{last_product.id+1}'
+    else:
+        reference = f'PRODUCT-001'
+
+    ip = request.META.get('REMOTE_ADDR')
+
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        category = Category.objects.get(id=category_id)
+        name = request.POST.get('name')
+        unit = request.POST.get('unit')
+        note = request.POST.get('note')
+
+        try:
+            Product.objects.create(Added_By=request.user,Added_IP=ip,Name=name,Reference=reference,Category=category,Unit=unit,Note=note)
+            messages.success(request,f'New product "{name}" added successfully ... !')
+            return redirect('products')
+        
+        except Exception as exception:
+            messages.warning(request,exception)
+            return redirect('add-product')
+
+    context = {
+        'categories' : categories,
+        'reference' : reference
+    }
+    return render(request,'Dashboard/Masters/product-add.html',context)
+
+#----------------------------------- EDIT PRODUCT -----------------------------------#
+
+@login_required
+def edit_product(request,product_id):
+    product = Product.objects.get(Reference=product_id)
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        category = Category.objects.get(id=category_id)
+
+        try:
+            product.Category = category
+            product.Name = request.POST.get('name')
+            product.Unit = request.POST.get('unit')
+            product.Note = request.POST.get('note')
+            product.save()
+
+            messages.success(request,f'Product edited successfully ... !')
+            return redirect('products')
+        
+        except Exception as exception:
+            messages.warning(request,exception)
+            return redirect('edit-product',product_id=product.Reference)
+
+    context = {
+        'product' : product,
+        'categories' : categories
+    }
+    return render(request,'Dashboard/Masters/product-edit.html',context)

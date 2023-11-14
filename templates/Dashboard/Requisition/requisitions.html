@@ -1,0 +1,170 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block page %} 
+    <li class="breadcrumb-item active" aria-current="page">Requisitions</li>
+{% endblock page %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- BEGIN: Notification -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="intro-y col-span-11 alert alert-{{ message.tags }} alert-dismissible show flex items-center mb-6 mt-5 text-white" role="alert">
+            <span><i data-lucide="info" class="w-4 h-4 mr-2"></i></span>
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <!-- BEGIN: Notification -->
+
+    <h2 class="text-primary text-center font-medium mt-10" style=" font-size: 30px;">Requisitions</h2>
+    <!-- BEGIN: Weekly Top Products -->
+    <div class="col-span-12 mt-6 border-t border-dark pt-5">
+        <div class="intro-y block sm:flex items-center h-10">
+            <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
+                <button class="btn btn-primary box flex items-center text-slate-600 dark:text-slate-300"> <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to Excel </button>
+                <a href="">
+                    <button class="btn btn-primary ml-3">Add New requisition</button>
+                </a>    
+            </div>
+        </div>
+        {% if requisitions %}
+            <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
+                <table class="table table-report sm:mt-2">
+                    <thead>
+                        <tr>
+                            <th class="text-center whitespace-nowrap">SL NO</th>
+                            <th class="text-center whitespace-nowrap">REFERENCE</th>
+                            <th class="text-center whitespace-nowrap">PROJECT</th>
+                            <th class="text-center whitespace-nowrap">NUMBER OF ITEMS</th>
+                            <th class="text-center whitespace-nowrap">CREATED DATE</th>
+                            <th class="text-center whitespace-nowrap">CREATED BY</th>
+                            <th class="text-center whitespace-nowrap">STATUS</th>
+                            <th class="text-center whitespace-nowrap">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for requisition in requisitions %}
+                            <tr class="intro-x">
+                                <td class="text-center">
+                                    {{ forloop.counter }}
+                                </td>
+                                <td class="text-center whitespace-nowrap">
+                                    <a href="" class="font-medium text-primary">{{ requisition.Reference }}</a>
+                                </td>
+                                <td class="text-center">
+                                    {{ requisition.Project.Reference }} 
+                                </td>
+                                <td class="text-center">10</td>
+                                <td class="text-center">{{ requisition.Added_Date | date:'d M Y' }}</td>
+                                <td class="text-center">{{ requisition.Added_By }}</td>
+
+                                {% if requisition.Requisition_Status == 'APPROVED' %}
+                                    <td class="text-center text-success">{{ requisition.Requisition_Status  }}</td>
+                                {% elif requisition.Requisition_Status == 'REJECTED' %}
+                                    <td class="text-center text-danger">{{ requisition.Requisition_Status  }}</td>
+                                {% else %}
+                                    <td class="text-center text-warning">{{ requisition.Requisition_Status  }}</td>
+                                {% endif %}
+
+                                <td class="table-report__action w-48">
+                                    <div class="flex justify-center items-center">
+                                        <a class="flex items-center mr-3 text-success" href="{% url 'view-requisition' requisition.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
+                                        {% if requisition.Requisition_Status == 'PENDING' %}
+                                            <a class="flex items-center mr-3 text-primary" href="{% url 'requisition' requisition.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
+                                        {% endif %}
+                                        <!-- <a class="flex items-center text-danger" onclick="delete_requisition('{{ requisition.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                        </a> -->
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
+                <table class="table table-report -mt-2">
+                    <tbody>
+                        <tr class="intro-x width"> 
+                            <td class=" width" style="width:100%;">
+                                <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
+                                    background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
+                                </i>
+                            <div style="text-align: center;">No data available!</div>
+                            </td>   
+                        </tr>    
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        <div class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3">
+            <nav class="w-full sm:w-auto sm:mr-auto">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevrons-left"></i> </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevron-left"></i> </a>
+                    </li>
+                    <li class="page-item"> <a class="page-link" href="#">...</a> </li>
+                    <li class="page-item"> <a class="page-link" href="#">1</a> </li>
+                    <li class="page-item active"> <a class="page-link" href="#">2</a> </li>
+                    <li class="page-item"> <a class="page-link" href="#">3</a> </li>
+                    <li class="page-item"> <a class="page-link" href="#">...</a> </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevron-right"></i> </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevrons-right"></i> </a>
+                    </li>
+                </ul>
+            </nav>
+            <select class="w-20 form-select box mt-3 sm:mt-0">
+                <option>10</option>
+                <option>25</option>
+                <option>35</option>
+                <option>50</option>
+            </select>
+        </div>
+    </div>
+    <!-- END: Weekly Top Products -->
+</div>
+
+<!-- BEGIN: Delete Confirmation Modal -->
+<div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="requisition_id" id="requisition_id">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center">
+                        <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to delete these records? <br>This process cannot be undone.</div>
+                    </div>
+                    <div class="px-5 pb-8 text-center">
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                        <button type="submit" class="btn btn-danger w-24">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- END: Delete Confirmation Modal -->
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    function delete_requisition(requisition_id){
+        $('#requisition_id').val(requisition_id)
+    }
+</script>
+
+{% endblock content %}

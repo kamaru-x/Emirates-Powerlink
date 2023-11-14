@@ -26,7 +26,8 @@ urlpatterns = [
     path('',include('U_Auth.urls')),
     path('',include('ErrHandler.urls')),
     path('',include('Core.urls')),
-    path('project/',include('Projects.urls'))
+    path('project/',include('Projects.urls')),
+    path('requisition/',include('Requisition.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block page %} 
-    <li class="breadcrumb-item active" aria-current="page">Manage Categories</li>
+    <li class="breadcrumb-item active" aria-current="page">Manage Projects</li>
 {% endblock page %}
 
 {% block content %}
@@ -21,51 +21,65 @@
     {% endif %}
     <!-- BEGIN: Notification -->
 
-    <h2 class="text-primary text-center font-medium mt-10" style=" font-size: 30px;">Manage Categories</h2>
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">Manage Projects</h2>
     <!-- BEGIN: Weekly Top Products -->
     <div class="col-span-12 mt-6 border-t border-dark pt-5">
         <div class="intro-y block sm:flex items-center h-10">
             <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
                 <button class="btn btn-primary box flex items-center text-slate-600 dark:text-slate-300"> <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to Excel </button>
-                <a href="{% url 'add-category' %}">
-                    <button class="btn btn-primary ml-3">Add New Category</button>
+                <a href="{% url 'create-project' %}">
+                    <button class="btn btn-primary ml-3">Create New Project</button>
                 </a>    
             </div>
         </div>
-        {% if categories %}
+        {% if projects %}
             <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
                 <table class="table table-report sm:mt-2">
                     <thead>
                         <tr>
                             <th class="text-center whitespace-nowrap">SL NO</th>
-                            <th class="text-center whitespace-nowrap">NAME</th>
+                            <th class="text-center whitespace-nowrap">PROJECT NAME</th>
                             <th class="text-center whitespace-nowrap">REFERENCE</th>
-                            <th class="text-center whitespace-nowrap">NOTE</th>
-                            <th class="text-center whitespace-nowrap">ADDED DATE</th>
+                            <th class="text-center whitespace-nowrap">CLIENT NAME</th>
+                            <th class="text-center whitespace-nowrap">CONTACT PERSON</th>
+                            <th class="text-center whitespace-nowrap">CONTACT NUMBER</th>
+                            <th class="text-center whitespace-nowrap">STATUS</th>
                             <th class="text-center whitespace-nowrap">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for category in categories %}
+                        {% for project in projects %}
                             <tr class="intro-x">
                                 <td class="text-center">
                                     {{ forloop.counter }}
                                 </td>
                                 <td class="text-center whitespace-nowrap">
-                                    <a href="" class="font-medium text-primary">{{ category.Name }}</a>
+                                    <a href="" class="font-medium text-primary">{{ project.Project_Name }}</a>
                                 </td>
                                 <td class="text-center">
-                                    {{ category.Reference }} 
+                                    {{ project.Reference }} 
                                 </td>
-                                <td class="text-center">{{ category.Note }}</td>
-                                <td class="text-center">{{ category.Added_Date | date:'d M Y' }}</td>
+                                <td class="text-center">{{ project.Client_Name }}</td>
+                                <td class="text-center">{{ project.Contact_Name }}</td>
+                                <td class="text-center">{{ project.Contact_Number }}</td>
+                                <td class="text-center">STARTED</td>
                                 <td class="table-report__action w-48">
                                     <div class="flex justify-center items-center">
-                                        <!-- <a class="flex items-center mr-3 text-success" href=""> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a> -->
-                                        <a class="flex items-center mr-3 text-primary" href="{% url 'edit-category' category.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
-                                        <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
-                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                        <a class="flex items-center mr-3 text-success" href="{% url 'project-details' project.Reference %}"> 
+                                            <i data-lucide="eye" class="w-4 h-4 mr-1" title="view"></i>
                                         </a>
+
+                                        {% if user.is_superuser %}
+                                            <a class="flex items-center mr-3 text-primary" href="{% url 'edit-project' project.Reference %}" title="edit"> 
+                                                <i data-lucide="edit" class="w-4 h-4 mr-1"></i>
+                                            </a>
+                                            <a class="flex items-center mr-3 text-warning" href="" title="cancel"> 
+                                                <i data-lucide="x-circle" class="w-4 h-4 mr-1"></i>
+                                            </a>
+                                            <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                                <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'U_Auth', # for authentication related functions
     'ErrHandler', # for handling errors
     'Core', # functions included in masters module
-    'Projects' # functions related to projects module
+    'Projects', # functions related to projects module
+    'Requisition', # functions related to Requisition
 ]
 
 MIDDLEWARE = [

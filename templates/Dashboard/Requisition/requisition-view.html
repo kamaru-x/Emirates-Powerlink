@@ -1,0 +1,176 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block page %} 
+    <li class="breadcrumb-item active" aria-current="page">View Requisition</li>
+{% endblock page %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- BEGIN: Notification -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="intro-y col-span-11 alert alert-{{ message.tags }} alert-dismissible show flex items-center mb-6 mt-5 text-white" role="alert">
+            <span><i data-lucide="info" class="w-4 h-4 mr-2"></i></span>
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <!-- BEGIN: Notification -->
+
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">MATERIAL REQUISITION FORM</h2>
+    
+    <div class="intro-y block sm:flex items-center h-10">
+        <div class="flex items-center sm:ml-auto mt-3 sm:mt-0 gap-3">
+            <a href="{% url 'print-requisition' requisition.Reference %}" target="_blank">
+                <button class="btn btn-primary ml-3"><i data-lucide="printer" class="hidden sm:block w-4 h-4 mr-2"></i> Print</button>
+            </a>
+
+            {% if user.is_superuser or user.Job_Role == 'Purchase Manager' %}
+                {% if requisition.Requisition_Status == 'APPROVED' %}
+                    <a href="">
+                        <button class="btn btn-primary">
+                            <i data-lucide="file" class="hidden sm:block w-4 h-4 mr-2"></i> Quotations
+                        </button>
+                    </a>
+                {% endif %}
+            {% endif %} 
+        </div>
+    </div>
+
+    <!-- BEGIN: Profile Info -->
+    <div class="intro-y box px-5 pt-5 mt-5">
+
+        <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
+            
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Requested By : {{ user }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Project No : {{ requisition.Project.Reference }} </div>
+                </div>
+            </div>
+
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Requisition No : {{ requisition.Reference }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Date : {{ requisition.Added_Date | date:'d M Y' }} </div>
+                </div>
+            </div>
+
+        </div>
+
+        <table class="table table-report sm:mt-2 pb-5">
+            <thead>
+                <tr>
+                    <th class="text-center whitespace-nowrap">SL NO</th>
+                    <th class="text-center whitespace-nowrap">NAME</th>
+                    <th class="text-center whitespace-nowrap">REFERENCE</th>
+                    <th class="text-center whitespace-nowrap">UNIT</th>
+                    <th class="text-center whitespace-nowrap">QUANTITY</th>
+                    <th class="text-center whitespace-nowrap">NOTE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in rq_items %}
+                    <tr class="intro-x">
+                        <td class="text-center">
+                            {{ forloop.counter }}
+                        </td>
+                        <td class="text-center whitespace-nowrap">
+                            <a href="" class="font-medium text-primary">{{ item.Product }}</a>
+                        </td>
+                        <td class="text-center">
+                            {{ item.Product.Reference }} 
+                        </td>
+                        <td class="text-center">{{ item.Product.Unit }}</td>
+                        <td class="text-center">{{ item.Quantity }}</td>
+                        <td class="text-center">{{ item.Note }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5 py-10">
+            
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Prepared By : {{ requisition.Prepared_By }} </div>
+                </div>
+            </div>
+
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Checked By : {{ requisition.Checked_By }} </div>
+                </div>
+            </div>
+
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Approved By : {{ requisition.Approved_By }} </div>
+                    <!-- <div class="truncate sm:whitespace-normal flex items-center mt-3">Date : {{ requisition.Added_Date | date:'d M Y' }} </div> -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- END: Profile Info -->
+
+    {% if user.is_superuser or user.Job_Role == 'Department Manager' %}
+        {% if requisition.Requisition_Status == 'PENDING' %}
+            <div class="col-span-12 flex justify-center mt-5 gap-3">
+                <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#approve-modal" class="btn btn-success text-white">Approve</a>
+                <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#reject-modal" class="btn btn-danger text-white">Reject</a>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- accept model start -->
+<div id="approve-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'approve-requisition' requisition.Reference %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center"> <i data-lucide="check-circle" class="w-16 h-16 text-success mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to approve these requisition? <br>This process cannot be undone.</div>
+                    </div>
+                    <div class="px-5 pb-8 text-center"> 
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button> 
+                        <button type="submit" class="btn btn-success text-white w-24">Approve</button> 
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- accept model end -->
+
+<!-- reject model start -->
+<div id="reject-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'reject-requisition' requisition.Reference %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center"> <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to reject these requisition? <br>This process cannot be undone.</div>
+                    </div>
+                    <div class="px-5 pb-8 text-center"> 
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button> 
+                        <button type="submit" class="btn btn-danger text-white w-24">Reject</button> 
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- reject model end -->
+
+{% endblock content %}

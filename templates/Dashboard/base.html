@@ -269,26 +269,35 @@
                         <div class="top-menu__title"> Dashboard </div>
                     </a>
                 </li>
-                <li>
-                    <a href="javascript:;" class="top-menu">
-                        <div class="top-menu__icon"> <i data-lucide="box"></i> </div>
-                        <div class="top-menu__title"> Masters <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
-                    </a>
-                    <ul class="">
-                        <li>
-                            <a href="{% url 'categories' %}" class="top-menu">
-                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="top-menu__title"> Categories </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'staffs' %}" class="top-menu">
-                                <div class="top-menu__icon"> <i data-lucide="users"></i> </div>
-                                <div class="top-menu__title"> Staffs </div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
+                {% if user.is_superuser %}
+                    <li>
+                        <a href="javascript:;" class="top-menu">
+                            <div class="top-menu__icon"> <i data-lucide="box"></i> </div>
+                            <div class="top-menu__title"> Masters <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
+                        </a>
+                        <ul class="">
+                            <li>
+                                <a href="{% url 'categories' %}" class="top-menu">
+                                    <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="top-menu__title"> Categories </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'products' %}" class="top-menu">
+                                    <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="top-menu__title"> Products </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'staffs' %}" class="top-menu">
+                                    <div class="top-menu__icon"> <i data-lucide="users"></i> </div>
+                                    <div class="top-menu__title"> Staffs </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
 
                 <li>
                     <a href="javascript:;" class="top-menu">
@@ -296,20 +305,51 @@
                         <div class="top-menu__title"> Projects <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
                     </a>
                     <ul class="">
+
+                        {% if user.is_superuser %}
+                            <li>
+                                <a href="{% url 'create-project' %}" class="top-menu">
+                                    <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="top-menu__title"> Create New Project </div>
+                                </a>
+                            </li>
+                        {% endif %}
+
                         <li>
-                            <a href="" class="top-menu">
-                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="top-menu__title"> Start New Project </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="" class="top-menu">
+                            <a href="{% url 'projects' %}" class="top-menu">
                                 <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="top-menu__title"> Manage Projects </div>
                             </a>
                         </li>
+
+                        <li>
+                            <a href="{% url 'projects' %}" class="top-menu">
+                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="top-menu__title"> Assign Projects </div>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
+
+                {% if user.is_superuser or user.Job_Role == 'Project Engineer' or user.Job_Role == 'Department Manager' or user.Job_Role == 'Purchase Manager' %}
+                    <li>
+                        <a href="javascript:;" class="top-menu">
+                            <div class="top-menu__icon"> <i data-lucide="box"></i> </div>
+                            <div class="top-menu__title"> Requisition <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
+                        </a>
+                        <ul class="">
+
+                            <li>
+                                <a href="{% url 'requisitions' %}" class="top-menu">
+                                    <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                    <div class="top-menu__title"> Requisitions </div>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                {% endif %}
 
                 <li>
                     <a href="javascript:;" class="top-menu">
@@ -359,12 +399,24 @@
         <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=["your-google-map-api"]&libraries=places"></script>
         <script src="{% static 'dashboard/js/app.js' %}"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
 
         <!-- EXTRA JS STARTS -->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="{% static 'dashboard/extrajs/core.js' %}"></script>
         <script src="{% static 'dashboard/extrajs/block.js' %}"></script>
+        <script src="{% static 'dashboard/extrajs/requisition.js' %}"></script>
         <!-- EXTRA JS ENDS-->
         <!-- END: JS Assets-->
+        <script>
+            ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .then( editor => {
+            console.log( editor );
+            } )
+            .catch( error => {
+            console.error( error );
+            } );
+        </script>
     </body>
 </html>
