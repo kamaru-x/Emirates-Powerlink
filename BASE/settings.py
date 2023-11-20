@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'Core', # functions included in masters module
     'Projects', # functions related to projects module
     'Requisition', # functions related to Requisition
+    'Quotation', # functions related to Quotation
+    'Inventory', # functions related to Inventory
 ]
 
 MIDDLEWARE = [

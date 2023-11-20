@@ -1,0 +1,150 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block page %} 
+    <li class="breadcrumb-item active" aria-current="page">View Requisition</li>
+{% endblock page %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- BEGIN: Notification -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="intro-y col-span-11 alert alert-{{ message.tags }} alert-dismissible show flex items-center mb-6 mt-5 text-white" role="alert">
+            <span><i data-lucide="info" class="w-4 h-4 mr-2"></i></span>
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <!-- BEGIN: Notification -->
+
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">EDIT LPO</h2>
+
+    <!-- BEGIN: Profile Info -->
+    <div class="intro-y box px-5 pt-5 mt-5">
+
+        <form action="" method="post">
+        {% csrf_token %}
+        <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
+            <div class="intro-y col-span-12 sm:col-span-4">
+                <label for="input-wizard-2" class="form-label">TRN Number</label>
+                <input value="{{ lpo.TRN }}" name="name" type="text" class="form-control" placeholder="Enter TRN Number" required maxlength="100">
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-4">
+                <label for="input-wizard-2" class="form-label">PO DATE</label>
+                <input name="" value="{{ lpo.PO_Date | date:'Y-m-d' }}" type="date" class="form-control" readonly>
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-4">
+                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
+                <input value="{{ lpo.PO_ }}" name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="100">
+            </div>
+        </div>
+
+        <table class="table table-report sm:mt-10 pb-5 ">
+            <thead>
+                <tr>
+                    <th class="text-center whitespace-nowrap">SL NO</th>
+                    <th class="text-center whitespace-nowrap">CATEGORY</th>
+                    <th class="text-center whitespace-nowrap">NAME</th>
+                    <th class="text-center whitespace-nowrap">UNIT</th>
+                    <th class="text-center whitespace-nowrap">QUANTITY</th>
+                    <th class="text-center whitespace-nowrap">BRAND</th>
+                    <th class="text-center whitespace-nowrap">UNIT PRICE</th>
+                    <th class="text-center whitespace-nowrap">NET</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr class="intro-x">
+                        <td class="text-center">
+                            {{ forloop.counter }}
+                        </td>
+                        <td class="text-center">
+                            {{ item.Item.Product.Category }}
+                        </td>
+                        <td class="text-center whitespace-nowrap">
+                            <a href="" class="font-medium text-primary">{{ item.Item.Product }}</a>
+                        </td>
+                        <td class="text-center">
+                            {{ item.Item.Product.Unit }} 
+                        </td>
+                        <td class="text-center">{{ item.Item.Quantity }}</td>
+                        <td class="text-center">{{ item.Brand }}</td>
+                        <td class="text-center">{{ item.Price }}</td>
+                        <td class="text-center">{{ item.Net }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="7"></td>
+                    <td colspan="" class="">Net Total : <b>{{ quotation.Sub_Total }}</b></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5 pb-10"> 
+            <div class="intro-y col-span-12 sm:col-span-12">
+                <label for="input-wizard-2" class="form-label">Payment Terms</label>
+                <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-12">
+                <label for="input-wizard-2" class="form-label">Delivery Terms</label>
+                <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-12">
+                <label for="input-wizard-2" class="form-label">Terms and Condetions</label>
+                <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+            </div>
+
+            
+            <div class="intro-y col-span-12 sm:col-span-4">
+                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
+                <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+            </div>
+            <div class="intro-y col-span-12 sm:col-span-4">
+                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
+                <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+            </div>
+            <div class="intro-y col-span-12 sm:col-span-4">
+                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
+                <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+            </div>
+
+            <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+                <button id="submit-btn" class="btn btn-primary w-24 ml-2" type="submit">Submit</button>
+            </div>
+        </div>
+        </form>
+    </div>
+    <!-- END: Profile Info -->
+</div>
+
+<!-- accept model start -->
+<div id="convert-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'convert-to-lpo' quotation.Reference %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center"> <i data-lucide="check-circle" class="w-16 h-16 text-success mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to approve these requisition? <br>This process cannot be undone.</div>
+                    </div>
+                    <div class="px-5 pb-8 text-center"> 
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button> 
+                        <button type="submit" class="btn btn-primary w-24">Confirm</button> 
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- accept model end -->
+
+{% endblock content %}

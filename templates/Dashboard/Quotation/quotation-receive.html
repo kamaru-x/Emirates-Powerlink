@@ -1,0 +1,108 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block page %} 
+    <li class="breadcrumb-item active" aria-current="page">Receive Requisition</li>
+{% endblock page %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- BEGIN: Notification -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="intro-y col-span-11 alert alert-{{ message.tags }} alert-dismissible show flex items-center mb-6 mt-5 text-white" role="alert">
+            <span><i data-lucide="info" class="w-4 h-4 mr-2"></i></span>
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <!-- BEGIN: Notification -->
+
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">Receive Requisition</h2>
+
+    <!-- BEGIN: Profile Info -->
+    <div class="intro-y box px-5 pt-5 mt-5">
+
+        <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
+            
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Requested By : {{ user }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Project No : {{ requisition.Project.Reference }} </div>
+                </div>
+            </div>
+
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="flex flex-col justify-center items-center mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center">Requisition No : {{ requisition.Reference }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Date : {{ requisition.Added_Date | date:'d M Y' }} </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- END: Profile Info -->
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="intro-y box px-5 pt-5 mt-5 py-3 col-span-12 text-center">
+            <h1 class="pb-5 font-bold text-primary" style="font-size: 20px;">Enter Vendor Details</h1>
+            <div class="grid grid-cols-12 gap-4 gap-y-5">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <input name="vendor" type="text" class="form-control" maxlength="100" placeholder="Enter Vendor Name" required>
+                </div>
+
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-y box px-5 pt-5 mt-5">
+            <table class="table table-report sm:mt-2 pb-5">
+                <thead>
+                    <tr>
+                        <th class="text-center whitespace-nowrap">SL NO</th>
+                        <th class="text-center whitespace-nowrap">NAME</th>
+                        <th class="text-center whitespace-nowrap">UNIT</th>
+                        <th class="text-center whitespace-nowrap">QUANTITY</th>
+                        <th class="text-center whitespace-nowrap">BRAND</th>
+                        <th class="text-center whitespace-nowrap">UNIT PRICE</th>
+                        <th class="text-center whitespace-nowrap">NET PRICE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for item in rq_items %}
+                            <tr class="intro-x">
+                                <td class="text-center">
+                                    {{ forloop.counter }}
+                                </td>
+                                <td class="text-center whitespace-nowrap">
+                                    <a href="" class="font-medium text-primary">{{ item.Product }}</a>
+                                </td>
+                                <td class="text-center">{{ item.Product.Unit }}</td>
+                                <td class="text-center">{{ item.Quantity }}</td>
+                                <td>
+                                    <input type="text" name="brand[]" id="brand-{{ item.id }}" class="form-control brand" data-id="{{ item.id }}" placeholder="Brand">
+                                </td>
+                                <td>
+                                    <input type="number" step="0.01" name="price[]" id="price-{{ item.id }}" class="form-control price" data-id="{{ item.id }}" placeholder="Unit Price">
+                                </td>
+                                <td>
+                                    <input type="number" step="0.01" name="net[]" id="net-{{ item.id }}" class="form-control net" data-id="{{ item.id }}" placeholder="Net Price">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="col-span-12 flex justify-center py-3">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

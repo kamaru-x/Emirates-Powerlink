@@ -1,0 +1,177 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block page %} 
+    <li class="breadcrumb-item active" aria-current="page">Project Details</li>
+{% endblock page %}
+
+{% block content %}
+
+<div class="content">
+
+    <!-- BEGIN: Notification -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="intro-y col-span-11 alert alert-{{ message.tags }} alert-dismissible show flex items-center mb-6 mt-5 text-white" role="alert">
+            <span><i data-lucide="info" class="w-4 h-4 mr-2"></i></span>
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <!-- BEGIN: Notification -->
+
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">Project Details</h2>
+
+    <!-- BEGIN: Profile Info -->
+    <div class="intro-y box px-5 pt-5 mt-5">
+        <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
+            <div class="flex flex-1 px-5 items-center justify-center">
+                <div class="ml-5 text-center">
+                    <div class="sm:whitespace-normal font-medium text-lg">{{ project.Project_Name }}</div>
+                    <div class="text-slate-500 mt-2">REFERENCE : {{ project.Reference }}</div>
+                    <div class="text-slate-500 mt-2">EXPECTING START DATE : {{ project.Expected_Starting_Date | date:'d M Y' }}</div>
+                    <div class="text-slate-500 mt-2">EXPECTING FINAL AMOUNT : {{ project.Expected_Amount }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
+            
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="font-medium text-center lg:text-left lg:mt-3">Client Details</div>
+                <div class="flex flex-col justify-center items-center lg:items-start mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center"> <i data-lucide="user" class="w-4 h-4 mr-2"></i> {{ project.Client_Name }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-lucide="phone" class="w-4 h-4 mr-2"></i> {{ project.Client_Mobile }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-lucide="mail" class="w-4 h-4 mr-2"></i> {{ project.Client_Email }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> {{ project.Client_Address }} </div>
+                </div>
+            </div>
+
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <div class="font-medium text-center lg:text-left lg:mt-3">Contact Details</div>
+                <div class="flex flex-col justify-center items-center lg:items-start mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center"> <i data-lucide="user" class="w-4 h-4 mr-2"></i> {{ project.Contact_Name }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-lucide="phone" class="w-4 h-4 mr-2"></i> {{ project.Contact_Number }} </div>
+                </div>
+            </div>
+
+            <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
+                <!-- <div class="font-medium text-center lg:text-left lg:mt-3">Client Details</div> -->
+                <div class="flex flex-col justify-center items-center lg:items-start mt-4">
+                    <div class="truncate sm:whitespace-normal flex items-center"> 
+                        <i data-lucide="user" class="w-4 h-4 mr-2"></i>
+                        <span class="font-medium mr-2">Department Managers : </span> {% for dm in project.Department_Managers.all %} {{ dm }} {% endfor %} 
+                    </div>
+
+                    {% if project.Project_Engineers %}
+                        <div class="truncate sm:whitespace-normal flex items-center mt-3"> 
+                            <i data-lucide="user" class="w-4 h-4 mr-2"></i>
+                            <span class="font-medium mr-2">Project Engineers : </span> {% for pe in project.Project_Engineers.all %} {{ pe }} {% endfor %} 
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- END: Profile Info -->
+
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 20px;">Inventory Items</h2>
+
+    <div class="intro-y block sm:flex items-center h-10">
+        <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
+            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#inventory-modal">
+                <button class="btn btn-primary ml-3">Add To Inventory</button>
+            </a>    
+        </div>
+    </div>
+
+    <!-- BEGIN: General Report -->
+    <div class="col-span-12 grid grid-cols-12 gap-6 mt-8">
+
+        {% for item in items %}
+            <div class="col-span-3 sm:col-span-3 2xl:col-span-3 intro-y">
+                <div class="intro-x">
+                    <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                        <div class="ml-4 mr-auto">
+                            <div class="font-medium">{{ item.Item.Product.Name }}</div>
+                            <!-- <div class="text-slate-500 text-xs mt-0.5">27 May 2021</div> -->
+                        </div>
+                        <div class="text-primary">
+                            <span class="text-success">{{ item.received }}</span> / <span class="text-warning">{{ item.Item.Quantity }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    <!-- END: General Report -->
+</div>
+
+<!-- BEGIN: Modal Content -->
+<div id="inventory-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form action="{% url 'add-to-inventory' project.id %}" method="post">
+                {% csrf_token %}
+                <!-- BEGIN: Modal Header -->
+                <div class="modal-header">
+                    <h2 class="font-medium text-base mx-auto my-2">Add Items To Inventory</h2> 
+                </div> 
+                <!-- END: Modal Header -->
+
+                <!-- BEGIN: Modal Body -->
+                <div class="modal-body flex justify-center">
+                    <table class="table table-report">
+                        <thead>
+                            <tr>
+                                <th class="text-center whitespace-nowrap">Item</th>
+                                <th class="text-center whitespace-nowrap">QUANTITY</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+                            <tr class="intro-x">
+                                <td class="text-center whitespace-nowrap">
+                                    <select name="items[]" id="" class="form-control">
+                                        <option value="">Select Item</option>
+                                        {% for item in items %}
+                                            <option value="{{ item.id }}">{{ item.Item.Product }} ({{item.Item.Product.Reference}})</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td class="text-center whitespace-nowrap">
+                                    <input type="number" name="quantity[]" id="" class="form-control" placeholder="Enter number of quantity">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-span-12 py-2 flex justify-center">
+                    <button class="btn btn-primary" id="add-another" type="button">ADD ANOTHER</button>
+                </div> 
+                <!-- END: Modal Body -->
+
+                <!-- BEGIN: Modal Footer -->
+                <div class="modal-footer"> 
+                    <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-20 mr-1">Cancel</button> 
+                    <button type="submit" class="btn btn-primary w-20">Submit</button> 
+                </div> 
+                <!-- END: Modal Footer -->
+            </form>
+        </div>
+    </div>
+</div> 
+<!-- END: Modal Content -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $('#add-another').on('click',function(){
+            html = '<tr class="intro-x"><td class="text-center whitespace-nowrap"><select name="items[]" id="" class="form-control"><option value="">Select Item</option>{% for item in items %}<option value="{{ item.id }}">{{ item.Item.Product }} ({{item.Item.Product.Reference}})</option>{% endfor %}</select></td><td class="text-center whitespace-nowrap"><input type="number" name="quantity[]" id="" class="form-control" placeholder="Enter number of quantity"></td></tr>'
+            $('#tbody').append(html)
+        })
+    })
+</script>
+
+{% endblock content %}
