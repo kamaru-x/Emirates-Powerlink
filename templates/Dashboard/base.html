@@ -217,8 +217,8 @@
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
                     <div class="dropdown-toggle w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110" role="button" aria-expanded="false" data-tw-toggle="dropdown">
-                        {% if request.user.Image %}
-                            <img alt="" src="{{ request.user.Image.url }}">
+                        {% if user.Image %}
+                            <img alt="" src="{{ user.Image.url }}">
                         {% else %}
                             <img alt="" src="{% static 'dashboard/images/profile.jpg' %}">
                         {% endif %}
@@ -226,12 +226,12 @@
                     <div class="dropdown-menu w-56">
                         <ul class="dropdown-content bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">
                             <li class="p-2">
-                                <div class="font-medium">{{ request.user.first_name }}</div>
+                                <div class="font-medium">{{ user.first_name }}</div>
                                 <div class="text-xs text-white/60 mt-0.5 dark:text-slate-500">
-                                    {% if request.user.is_superuser %}
+                                    {% if user.is_superuser %}
                                         Super Admin
                                     {% else %}
-                                        {{ request.User.Job_Role }}
+                                        {{ user.Job_Role }}
                                     {% endif %}
                                 </div>
                             </li>
@@ -447,6 +447,7 @@
         <script src="{% static 'dashboard/extrajs/core.js' %}"></script>
         <script src="{% static 'dashboard/extrajs/block.js' %}"></script>
         <script src="{% static 'dashboard/extrajs/requisition.js' %}"></script>
+        <script src="{% static 'dashboard/extrajs/quotation.js' %}"></script>
         <!-- EXTRA JS ENDS-->
         <!-- END: JS Assets-->
         <script>

@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from Projects.models import Project
 from U_Auth.models import User
 from django.contrib import messages
+from Requisition.models import Requisition,Requisition_Item
+from django.db.models import Count
 
 # Create your views here.
 
@@ -81,6 +83,7 @@ def create_project(request):
 def project_details(request,project_id):
     project = Project.objects.get(Reference=project_id)
     project_engineers = User.objects.filter(Job_Role='Project Engineer')
+    requisitions = Requisition.objects.filter(Project=project).annotate(items=Count('requisition_item'))
 
     d_m = project.Department_Managers.all()
     p_e = project.Project_Engineers.all()
@@ -92,7 +95,8 @@ def project_details(request,project_id):
     context = {
         'project' : project,
         'project_engineers' : project_engineers,
-        'staffs' : staffs
+        'staffs' : staffs,
+        'requisitions' : requisitions
     }
     return render(request,'Dashboard/Projects/project-details.html',context)
 

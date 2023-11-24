@@ -32,6 +32,7 @@
                 <div class="flex flex-col justify-center items-center mt-4">
                     <div class="truncate sm:whitespace-normal flex items-center">Requested By : {{ user }} </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-3">Project No : {{ requisition.Project.Reference }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Project Name : {{ requisition.Project.Project_Name }} </div>
                 </div>
             </div>
 
@@ -75,27 +76,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                        {% for item in rq_items %}
-                            <tr class="intro-x">
-                                <td class="text-center">
-                                    {{ forloop.counter }}
-                                </td>
-                                <td class="text-center whitespace-nowrap">
-                                    <a href="" class="font-medium text-primary">{{ item.Product }}</a>
-                                </td>
-                                <td class="text-center">{{ item.Product.Unit }}</td>
-                                <td class="text-center">{{ item.Quantity }}</td>
-                                <td>
-                                    <input type="text" name="brand[]" id="brand-{{ item.id }}" class="form-control brand" data-id="{{ item.id }}" placeholder="Brand">
-                                </td>
-                                <td>
-                                    <input type="number" step="0.01" name="price[]" id="price-{{ item.id }}" class="form-control price" data-id="{{ item.id }}" placeholder="Unit Price">
-                                </td>
-                                <td>
-                                    <input type="number" step="0.01" name="net[]" id="net-{{ item.id }}" class="form-control net" data-id="{{ item.id }}" placeholder="Net Price">
-                                </td>
-                            </tr>
-                        {% endfor %}
+                    {% for item in rq_items %}
+                        <tr class="intro-x">
+                            <td class="text-center">
+                                {{ forloop.counter }}
+                            </td>
+                            <td class="text-center whitespace-nowrap">
+                                <a href="" class="font-medium text-primary">{{ item.Product }}</a>
+                            </td>
+                            <td class="text-center">{{ item.Product.Unit }}</td>
+                            <td class="text-center">{{ item.Quantity }}</td>
+                            <td>
+                                <input type="text" name="brand[]" id="brand-{{ item.id }}" class="form-control brand" data-id="{{ item.id }}" placeholder="Brand">
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" name="price[]" id="price-{{ item.id }}" class="form-control price" data-id="{{ item.id }}" data-quantity="{{ item.Quantity }}" placeholder="Unit Price">
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" name="net[]" id="net-{{ item.id }}" class="form-control net" data-id="{{ item.id }}" placeholder="Net Price" readonly>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
 

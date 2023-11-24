@@ -6,6 +6,7 @@ from Requisition.models import Requisition,Requisition_Item
 from Core.models import Category,Product
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.db.models import Count
 
 # Create your views here.
 
@@ -77,14 +78,24 @@ def add_requisition_item(request):
     
         return redirect('requisition',reference=requisition.Reference)
     
+#----------------------------------- DELETE REQUISITION ITEM -----------------------------------#
+
+@login_required
+def delete_requisition_item(request):
+    item_id = request.POST.get('item_id')
+    item = Requisition_Item.objects.get(id=item_id)
+    requisition = item.Requisition
+    item.delete()
+    return redirect('requisition',reference=requisition.Reference)
+
 #----------------------------------- REQUISITIONS -----------------------------------#
 
 @login_required
 def requisitions(request):
     if request.user.Job_Role == 'Purchase Manager':
-        requisitions = Requisition.objects.filter(Requisition_Status='APPROVED')
+        requisitions = Requisition.objects.filter(Requisition_Status='APPROVED').annotate(items=Count('requisition_item'))
     else:
-        requisitions = Requisition.objects.all()
+        requisitions = Requisition.objects.all().annotate(items=Count('requisition_item'))
 
     context = {
         'requisitions' : requisitions
@@ -143,6 +154,7 @@ def print_requisition(request,reference):
 def approve_requisition(request,reference):
     requisition = Requisition.objects.get(Reference=reference)
     requisition.Requisition_Status = 'APPROVED'
+    requisition.Approved_By = request.user
     requisition.save()
     return redirect('view-requisition',reference=requisition.Reference)
 

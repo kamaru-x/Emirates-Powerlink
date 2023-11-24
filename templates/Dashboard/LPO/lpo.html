@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="cs-invoice_left">
-                    <b class="cs-primary_color">P.O.NO : PO23/7011/07/2023 </b>
+                    <b class="cs-primary_color">P.O.NO : {{ lpo.PO_NO }} </b>
                 </div>
 
                 <h3 class="cs-text_center" style="margin-top: 25px; margin-bottom: 50px;">PURCHASE ORDER</h3>
@@ -38,8 +38,8 @@
                 <div class="cs-invoice_head cs-mb10">
 
                     <div class="cs-invoice_left">
-                        <p class="cs-primary_color">Name : SAS OVERSEAS GENERAL TRADING L.L.C </p>
-                        <p class="cs-primary_color">TRN : 100489963700003 </p>
+                        <p class="cs-primary_color">Name : {{ lpo.Quotation.Requisition.Project.Project_Name }}</p>
+                        <p class="cs-primary_color">TRN : {{ lpo.TRN }} </p>
                         <p class="cs-primary_color">Address : Al Mantaqah As Sina'iyah 1 St, Abu Dhabi, United Arab Emirates </p>
                         <p class="cs-primary_color">Tel No : +97125866932</p>
                         <p class="cs-primary_color">Contact : Mr.Shiyas</p>

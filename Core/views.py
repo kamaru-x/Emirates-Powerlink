@@ -82,6 +82,19 @@ def categories(request):
     }
     return render(request,'Dashboard/Masters/categories.html',context)
 
+#----------------------------------- CATEGORY VIEW -----------------------------------#
+
+@login_required
+def view_category(request,category_id):
+    category = Category.objects.get(Reference=category_id)
+    products = Product.objects.filter(Category=category)
+
+    context = {
+        'category' : category,
+        'products' : products
+    }
+    return render(request,'Dashboard/Masters/category-view.html',context)
+
 #----------------------------------- CATEGORY EDIT -----------------------------------#
 
 @login_required

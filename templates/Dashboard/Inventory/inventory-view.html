@@ -95,11 +95,11 @@
                 <div class="intro-x">
                     <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                         <div class="ml-4 mr-auto">
-                            <div class="font-medium">{{ item.Item.Product.Name }}</div>
+                            <div class="font-medium">{{ item.Name }}</div>
                             <!-- <div class="text-slate-500 text-xs mt-0.5">27 May 2021</div> -->
                         </div>
                         <div class="text-primary">
-                            <span class="text-success">{{ item.received }}</span> / <span class="text-warning">{{ item.Item.Quantity }}</span>
+                            <span class="text-success">{{ item.Received }}</span> / <span class="text-warning">{{ item.Total }}</span>
                         </div>
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                                 <td class="text-center whitespace-nowrap">
                                     <select name="items[]" id="" class="form-control">
                                         <option value="">Select Item</option>
-                                        {% for item in items %}
+                                        {% for item in items_list %}
                                             <option value="{{ item.id }}">{{ item.Item.Product }} ({{item.Item.Product.Reference}})</option>
                                         {% endfor %}
                                     </select>
@@ -168,7 +168,7 @@
 <script>
     $(document).ready(function(){
         $('#add-another').on('click',function(){
-            html = '<tr class="intro-x"><td class="text-center whitespace-nowrap"><select name="items[]" id="" class="form-control"><option value="">Select Item</option>{% for item in items %}<option value="{{ item.id }}">{{ item.Item.Product }} ({{item.Item.Product.Reference}})</option>{% endfor %}</select></td><td class="text-center whitespace-nowrap"><input type="number" name="quantity[]" id="" class="form-control" placeholder="Enter number of quantity"></td></tr>'
+            html = '<tr class="intro-x"><td class="text-center whitespace-nowrap"><select name="items[]" id="" class="form-control"><option value="">Select Item</option>{% for item in items_list %}<option value="{{ item.id }}">{{ item.Item.Product }} ({{item.Item.Product.Reference}})</option>{% endfor %}</select></td><td class="text-center whitespace-nowrap"><input type="number" name="quantity[]" id="" class="form-control" placeholder="Enter number of quantity"></td></tr>'
             $('#tbody').append(html)
         })
     })

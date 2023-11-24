@@ -24,13 +24,26 @@ def project_inventory(request):
 @login_required
 def inventory_view(request,quotation_id):
     quotation = Quotation.objects.get(id=quotation_id)
-    # items = QuotationItem.objects.filter(Quotation=quotation)
-    items = QuotationItem.objects.filter(Quotation=quotation).annotate(received=Sum('inventoryitem__Quantity'))
+    items = []
+    items_list = QuotationItem.objects.filter(Quotation=quotation)
+
+    for i in items_list:
+        # Use aggregate to find the sum of Quantity in Received
+        received = InventoryItem.objects.filter(Item=i).aggregate(Sum('Quantity'))['Quantity__sum'] or 0
+
+        data = {
+            'Name': i.Item.Product.Name,
+            'Total': i.Item.Quantity,
+            'Received': received,
+        }
+
+        items.append(data)
 
     context = {
         'quotation' : quotation,
         'project' : quotation.Requisition.Project,
-        'items' : items
+        'items' : items,
+        'items_list' : items_list
     }
 
     return render(request,'Dashboard/Inventory/inventory-view.html',context)

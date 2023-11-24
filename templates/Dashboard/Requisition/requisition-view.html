@@ -50,6 +50,7 @@
                 <div class="flex flex-col justify-center items-center mt-4">
                     <div class="truncate sm:whitespace-normal flex items-center">Requested By : {{ user }} </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-3">Project No : {{ requisition.Project.Reference }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Project Name : {{ requisition.Project.Project_Name }} </div>
                 </div>
             </div>
 
@@ -103,13 +104,13 @@
 
             <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
                 <div class="flex flex-col justify-center items-center mt-4">
-                    <div class="truncate sm:whitespace-normal flex items-center">Checked By : {{ requisition.Checked_By }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center">Checked By : {{ requisition.Checked_By | default:'' }} </div>
                 </div>
             </div>
 
             <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
                 <div class="flex flex-col justify-center items-center mt-4">
-                    <div class="truncate sm:whitespace-normal flex items-center">Approved By : {{ requisition.Approved_By }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center">Approved By : {{ requisition.Approved_By | default:'' }} </div>
                     <!-- <div class="truncate sm:whitespace-normal flex items-center mt-3">Date : {{ requisition.Added_Date | date:'d M Y' }} </div> -->
                 </div>
             </div>

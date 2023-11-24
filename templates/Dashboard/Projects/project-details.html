@@ -64,7 +64,7 @@
                         <span class="font-medium mr-2">Department Managers : </span> {% for dm in project.Department_Managers.all %} {{ dm }} {% endfor %} 
                     </div>
 
-                    {% if project.Project_Engineers %}
+                    {% if project.Project_Engineers.all %}
                         <div class="truncate sm:whitespace-normal flex items-center mt-3"> 
                             <i data-lucide="user" class="w-4 h-4 mr-2"></i>
                             <span class="font-medium mr-2">Project Engineers : </span> {% for pe in project.Project_Engineers.all %} {{ pe }} {% endfor %} 
@@ -75,36 +75,67 @@
 
         </div>
 
-        <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
-            <div class="flex flex-1 px-5 items-center">
-                <div class="ml-5">
-                    <!-- <div class="sm:whitespace-normal font-medium text-lg">{{ project.Project_Name }}</div> -->
-                    <div class="text-slate-500 mt-2">{{ project.project_Description | safe }}</div>
-
-                    <div class="col-span-12 text-center mt-5">
-                        {% if user.is_superuser or user.Job_Role == 'Department Manager' %}
-                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview" class="btn btn-primary">
-                                {% if project.Project_Engineers.all %}
-                                    EDIT PROJECT ENGINEER
-                                {% else %}
-                                    ASSIGN TO PROJECT ENGINEER
-                                {% endif %}
-                            </a> 
-                        {% endif %}
-
-                        {% if user.is_superuser or user.Job_Role == 'Project Engineer' %}
-                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary">CREATE REQUISITION</a>
-                        {% endif %}
-                    </div>
-
+        <!-- <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
+            <div class="px-5 items-center">
+                <div class="grid grid-cols-12 gap-y-5 mt-5">
+                    
+                    {% if project.project_Descriptio %}
+                        <div class="col-span-12">
+                            <div class="text-slate-500 mt-2">{{ project.project_Description | safe }}</div>
+                        </div>
+                    {% endif %}
+  
                 </div>
+                <div class="col-span-12 mt-5 flex justify-center gap-4">
+                    {% if user.is_superuser or user.Job_Role == 'Department Manager' %}
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview" class="btn btn-primary">
+                            {% if project.Project_Engineers.all %}
+                                EDIT PROJECT ENGINEER
+                            {% else %}
+                                ASSIGN TO PROJECT ENGINEER
+                            {% endif %}
+                        </a> 
+                    {% endif %}
+
+                    {% if user.is_superuser or user.Job_Role == 'Project Engineer' %}
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary">CREATE REQUISITION</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div> -->
+
+        <div class="border-b border-slate-200/60 pb-5">
+            <div class="grid grid-cols-12 gap-y-5">
+
+                {% if project.project_Description %}
+                    <div class="col-span-12">
+                        <div class="text-slate-500 mt-2">{{ project.project_Description | safe }}</div>
+                    </div>
+                {% endif %}
+
+                <div class="col-span-12 flex justify-center gap-4">
+                    {% if user.is_superuser or user.Job_Role == 'Department Manager' %}
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview" class="btn btn-primary">
+                            {% if project.Project_Engineers.all %}
+                                EDIT PROJECT ENGINEER
+                            {% else %}
+                                ASSIGN TO PROJECT ENGINEER
+                            {% endif %}
+                        </a> 
+                    {% endif %}
+
+                    {% if user.is_superuser or user.Job_Role == 'Project Engineer' %}
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary">CREATE REQUISITION</a>
+                    {% endif %}
+                </div>
+
             </div>
         </div>
 
         <ul class="nav nav-link-tabs" role="tablist">
             <li id="example-5-tab" class="nav-item flex-1" role="presentation">
                 <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-5" type="button" role="tab" aria-controls="example-tab-5" aria-selected="true">
-                    Employees Worked on Project
+                    Employees Working on Project
                 </button>
             </li>
 
@@ -118,6 +149,7 @@
         <div class="tab-content mt-5">
             <div id="example-tab-5" class="tab-pane leading-relaxed active pb-10" role="tabpanel" aria-labelledby="example-5-tab"> 
                 {% if staffs %}
+                <div class="intro-y overflow-auto lg:overflow-visible">
                     <table class="table table-report sm:mt-2">
                         <thead>
                             <tr>
@@ -166,6 +198,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
                 {% else %}
                     <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
                         <table class="table table-report -mt-2">
@@ -184,7 +217,80 @@
                 {% endif %}
             </div>
             <div id="example-tab-6" class="tab-pane leading-relaxed pb-10" role="tabpanel" aria-labelledby="example-6-tab"> 
+                {% if requisitions %}
+                    <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
+                        <table class="table table-report sm:mt-2">
+                            <thead>
+                                <tr>
+                                    <th class="text-center whitespace-nowrap">SL NO</th>
+                                    <th class="text-center whitespace-nowrap">REFERENCE</th>
+                                    <th class="text-center whitespace-nowrap">NUMBER OF ITEMS</th>
+                                    <th class="text-center whitespace-nowrap">CREATED DATE</th>
+                                    <th class="text-center whitespace-nowrap">CREATED BY</th>
+                                    <th class="text-center whitespace-nowrap">STATUS</th>
+                                    <th class="text-center whitespace-nowrap">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for requisition in requisitions %}
+                                    <tr class="intro-x">
+                                        <td class="text-center">
+                                            {{ forloop.counter }}
+                                        </td>
+                                        <td class="text-center whitespace-nowrap">
+                                            <a href="" class="font-medium text-primary">{{ requisition.Reference }}</a>
+                                        </td>
+                                        <td class="text-center">{{ requisition.items }}</td>
+                                        <td class="text-center">{{ requisition.Added_Date | date:'d M Y' }}</td>
+                                        <td class="text-center">{{ requisition.Added_By }}</td>
 
+                                        {% if requisition.Requisition_Status == 'APPROVED' %}
+                                            <td class="text-center text-success">{{ requisition.Requisition_Status  }}</td>
+                                        {% elif requisition.Requisition_Status == 'REJECTED' %}
+                                            <td class="text-center text-danger">{{ requisition.Requisition_Status  }}</td>
+                                        {% else %}
+                                            <td class="text-center text-warning">{{ requisition.Requisition_Status  }}</td>
+                                        {% endif %}
+
+                                        <td class="table-report__action w-48">
+                                            <div class="flex justify-center items-center">
+
+                                                <a class="flex items-center mr-3 text-success" href="{% url 'view-requisition' requisition.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
+                                                
+                                                {% if requisition.Requisition_Status == 'PENDING' %}
+                                                    <a class="flex items-center mr-3 text-primary" href="{% url 'requisition' requisition.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
+                                                {% endif %}
+
+                                                {% if requisition.Requisition_Status == 'APPROVED' %}
+                                                    <a class="flex items-center mr-3 text-primary" href="{% url 'compare' requisition.Reference %}" title="quotations"> <i data-lucide="file" class="w-4 h-4 mr-1"></i></a>
+                                                {% endif %}
+
+                                                <!-- <a class="flex items-center text-danger" onclick="delete_requisition('{{ requisition.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                                    <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                                </a> -->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
+                        <table class="table table-report -mt-2">
+                            <tbody>
+                                <tr class="intro-x width"> 
+                                    <td class=" width" style="width:100%;">
+                                        <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
+                                            background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
+                                        </i>
+                                    <div style="text-align: center;">No data available!</div>
+                                    </td>   
+                                </tr>    
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

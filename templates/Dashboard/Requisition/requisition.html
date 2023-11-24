@@ -32,6 +32,7 @@
                 <div class="flex flex-col justify-center items-center mt-4">
                     <div class="truncate sm:whitespace-normal flex items-center">Requested By : {{ user }} </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-3">Project No : {{ requisition.Project.Reference }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Project Name : {{ requisition.Project.Project_Name }} </div>
                 </div>
             </div>
 
@@ -113,7 +114,7 @@
                         <td class="text-center">{{ item.Note }}</td>
                         <td class="table-report__action w-48">
                             <div class="flex justify-center items-center">
-                                <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                <a class="flex items-center text-danger" onclick="delete_item('{{ item.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
                                     <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
                                 </a>
                             </div>
@@ -122,8 +123,43 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <div class="col-span-12 flex justify-center">
+            <a href="{% url 'requisitions' %}" class="btn btn-primary mb-5">Submit</a>
+        </div>
     </div>
     <!-- END: Profile Info -->
 </div>
+
+<!-- BEGIN: Delete Confirmation Modal -->
+<div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{% url 'delete-requisition-item' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="item_id" id="item_id">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center">
+                        <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to delete these records? <br>This process cannot be undone.</div>
+                    </div>
+                    <div class="px-5 pb-8 text-center">
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                        <button type="submit" class="btn btn-danger w-24">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- END: Delete Confirmation Modal -->
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    function delete_item(item_id){
+        $('#item_id').val(item_id)
+    }
+</script>
 
 {% endblock content %}

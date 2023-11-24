@@ -29,19 +29,48 @@
         <form action="" method="post">
         {% csrf_token %}
         <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
-            <div class="intro-y col-span-12 sm:col-span-4">
+            <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">TRN Number</label>
                 <input value="{{ lpo.TRN }}" name="name" type="text" class="form-control" placeholder="Enter TRN Number" required maxlength="100">
             </div>
 
-            <div class="intro-y col-span-12 sm:col-span-4">
-                <label for="input-wizard-2" class="form-label">PO DATE</label>
-                <input name="" value="{{ lpo.PO_Date | date:'Y-m-d' }}" type="date" class="form-control" readonly>
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">Address</label>
+                <input value="{{ lpo.Address }}" name="name" type="text" class="form-control" placeholder="Enter TRN Number" required maxlength="100">
             </div>
 
-            <div class="intro-y col-span-12 sm:col-span-4">
-                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
-                <input value="{{ lpo.PO_ }}" name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="100">
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">PO DATE</label>
+                <input name="" value="{{ lpo.PO_Date | date:'Y-m-d' }}" type="date" class="form-control">
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">PO Category</label>
+                <input name="" value="{{ lpo.PO_Category }}" type="text" class="form-control" placeholder="Enter PO Category">
+            </div>
+
+            <div class="col-span-12">
+                <h2 class="text-primary text-center font-medium py-2" style=" font-size: 15px;">Contact Details</h2>
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">Tel No</label>
+                <input name="" value="{{ lpo.Tel_No}}" type="text" class="form-control" placeholder="Enter Telephone Number">
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">Contact</label>
+                <input name="" value="{{ lpo.Contact }}" type="text" class="form-control" placeholder="Enter Contact Here">
+            </div>
+
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">Email</label>
+                <input name="" value="{{ lpo.Email }}" type="email" class="form-control" placeholder="Enter Contact Email">
+            </div>
+            
+            <div class="intro-y col-span-12 sm:col-span-3">
+                <label for="input-wizard-2" class="form-label">Mobile</label>
+                <input name="" value="{{ lpo.Mobile }}" type="text" class="form-control" placeholder="Enter Contact Mobile">
             </div>
         </div>
 
@@ -100,20 +129,6 @@
             <div class="intro-y col-span-12 sm:col-span-12">
                 <label for="input-wizard-2" class="form-label">Terms and Condetions</label>
                 <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
-            </div>
-
-            
-            <div class="intro-y col-span-12 sm:col-span-4">
-                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
-                <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
-            </div>
-            <div class="intro-y col-span-12 sm:col-span-4">
-                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
-                <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
-            </div>
-            <div class="intro-y col-span-12 sm:col-span-4">
-                <label for="input-wizard-2" class="form-label">PO CATEGORY</label>
-                <input name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
             </div>
 
             <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">

@@ -27,9 +27,9 @@
         <div class="intro-y block sm:flex items-center h-10">
             <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
                 <button class="btn btn-primary box flex items-center text-slate-600 dark:text-slate-300"> <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to Excel </button>
-                <a href="">
+                <!-- <a href="">
                     <button class="btn btn-primary ml-3">Add New requisition</button>
-                </a>    
+                </a>     -->
             </div>
         </div>
         {% if requisitions %}
@@ -59,7 +59,7 @@
                                 <td class="text-center">
                                     {{ requisition.Project.Reference }} 
                                 </td>
-                                <td class="text-center">10</td>
+                                <td class="text-center">{{ requisition.items }}</td>
                                 <td class="text-center">{{ requisition.Added_Date | date:'d M Y' }}</td>
                                 <td class="text-center">{{ requisition.Added_By }}</td>
 

@@ -32,6 +32,7 @@ class QuotationItem(models.Model):
     
 class LPO(models.Model):
     Quotation = models.ForeignKey(Quotation,on_delete=models.CASCADE)
+    PO_NO = models.CharField(max_length=50,null=True)
 
     TRN = models.CharField(max_length=25,null=True)
     PO_Date = models.DateField(null=True)
@@ -51,5 +52,5 @@ class LPO(models.Model):
     Delivery_Date = models.DateField(null=True)
     Order_Date = models.DateField(null=True)
 
-    def __str__(self):
-        return self.Reference
+    # def __str__(self):
+    #     return self.Reference

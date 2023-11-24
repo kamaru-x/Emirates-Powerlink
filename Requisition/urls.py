@@ -6,6 +6,7 @@ urlpatterns = [
     path('edit/<str:reference>/',views.requisition,name='requisition'),
     path('get-products/',views.get_products,name='get-products'),
     path('add/item/',views.add_requisition_item,name='add-requisition-item'),
+    path('delete/item/',views.delete_requisition_item,name='delete-requisition-item'),
     path('status/',views.requisitions,name='requisitions'),
     path('view/<str:reference>/',views.view_requisition,name='view-requisition'),
     path('print/<str:reference>/',views.print_requisition,name='print-requisition'),

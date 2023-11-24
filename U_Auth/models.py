@@ -9,6 +9,8 @@ JOBROLES = [
         ('Purchase Manager', 'Purchase Manager'),
         ('Site Engineer', 'Site Engineer'),
         ('Accountant', 'Accountant'),
+        ('Developer','Developer'),
+        ('Super Admin','Super Admnin')
     ]
 
 class User(AbstractUser):

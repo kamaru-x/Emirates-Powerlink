@@ -24,6 +24,13 @@ def compare(request,reference):
 def receive_quotation(request,reference):
     requisition = Requisition.objects.get(Reference = reference)
     rq_items = Requisition_Item.objects.filter(Requisition=requisition).order_by('-id')
+    
+    last_quotation = Quotation.objects.last()
+
+    if last_quotation:
+        ref = f'QUO-{last_quotation.id+1}'
+    else:
+        ref = f'REF-001'
 
     if request.method == 'POST':
         vendor = request.POST.get('vendor')
@@ -32,7 +39,7 @@ def receive_quotation(request,reference):
         price = request.POST.getlist('price[]')
         net = request.POST.getlist('net[]')
 
-        quotation = Quotation.objects.create(Requisition=requisition,Vendor=vendor,Note=note)
+        quotation = Quotation.objects.create(Requisition=requisition,Vendor=vendor,Note=note,Reference=ref)
 
         for i in range(len(rq_items)):
             rqi = rq_items[i]
@@ -112,9 +119,16 @@ def convert_to_lpo(request,reference):
     quotation.LPO_Date = date.today()
     quotation.save()
 
-    LPO.objects.create(Quotation=quotation)
+    last_lpo = LPO.objects.last()
 
-    return redirect('dashboard')
+    if last_lpo:
+        ref = f'LPO-00{last_lpo.id+1}'
+    else:
+        ref = f'LPO-001'
+
+    LPO.objects.create(Quotation=quotation,Reference=ref)
+
+    return redirect('lpos')
 
 #----------------------------------- LPOS -----------------------------------#
 
