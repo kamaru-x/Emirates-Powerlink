@@ -133,9 +133,15 @@
         </div>
 
         <ul class="nav nav-link-tabs" role="tablist">
-            <li id="example-5-tab" class="nav-item flex-1" role="presentation">
+            <!-- <li id="example-5-tab" class="nav-item flex-1" role="presentation">
                 <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-5" type="button" role="tab" aria-controls="example-tab-5" aria-selected="true">
                     Employees Working on Project
+                </button>
+            </li> -->
+
+            <li id="example-7-tab" class="nav-item flex-1" role="presentation">
+                <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-7" type="button" role="tab" aria-controls="example-tab-7" aria-selected="true">
+                    Expenses
                 </button>
             </li>
 
@@ -147,7 +153,7 @@
         </ul>
 
         <div class="tab-content mt-5">
-            <div id="example-tab-5" class="tab-pane leading-relaxed active pb-10" role="tabpanel" aria-labelledby="example-5-tab"> 
+            <!-- <div id="example-tab-5" class="tab-pane leading-relaxed active pb-10" role="tabpanel" aria-labelledby="example-5-tab"> 
                 {% if staffs %}
                 <div class="intro-y overflow-auto lg:overflow-visible">
                     <table class="table table-report sm:mt-2">
@@ -215,7 +221,7 @@
                         </table>
                     </div>
                 {% endif %}
-            </div>
+            </div> -->
             <div id="example-tab-6" class="tab-pane leading-relaxed pb-10" role="tabpanel" aria-labelledby="example-6-tab"> 
                 {% if requisitions %}
                     <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
@@ -292,6 +298,133 @@
                     </div>
                 {% endif %}
             </div>
+
+            <div id="example-tab-7" class="tab-pane leading-relaxed pb-10 active" role="tabpanel" aria-labelledby="example-7-tab"> 
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="col-span-12 flex justify-end">
+                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#add-expense-modal">
+                            <button class="btn btn-primary">Add Expense</button>
+                        </a>
+                    </div>
+                    <div class="col-span-6">
+                        <h2 class="text-center text-primary font-medium" style="font-size: 20px;">Direct Expenses</h2>
+                        {% if direct_expenses %}
+                            <div class="intro-y overflow-auto lg:overflow-visible">
+                                <table class="table table-report sm:mt-2">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center whitespace-nowrap">SL NO</th>
+                                            <th class="text-center whitespace-nowrap">TITLE</th>
+                                            <th class="text-center whitespace-nowrap">AMOUNT</th>
+                                            <th class="text-center whitespace-nowrap">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for expense in direct_expenses %}
+                                            <tr class="intro-x">
+                                                <td class="text-center">{{ forloop.counter }}</td>
+                                                
+                                                <td class="text-center">{{ expense.Title }}</td>
+
+                                                <td class="text-center">{{ expense.Amount }}</td>
+
+                                                <td class="table-report__action w-48">
+                                                    <div class="flex justify-center items-center">
+                                                        <a class="flex items-center text-danger" onclick="delete_expense('{{ expense.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#expense-delete-modal" title="delete"> 
+                                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr class="intro-x">
+                                            <td></td>
+                                            <td class="text-center justify-center text-primary">Total : </td>
+                                            <td class="text-center justify-center text-success">{{ direct_expenses_total }}</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
+                                <table class="table table-report -mt-2">
+                                    <tbody>
+                                        <tr class="intro-x width"> 
+                                            <td class=" width" style="width:100%;">
+                                                <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
+                                                    background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
+                                                </i>
+                                            <div style="text-align: center;">No data available!</div>
+                                            </td>   
+                                        </tr>    
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-span-6">
+                        <h2 class="text-center text-primary font-medium" style="font-size: 20px;">Indirect Expenses</h2>
+                        {% if indirect_expenses %}
+                            <div class="intro-y overflow-auto lg:overflow-visible">
+                                <table class="table table-report sm:mt-2">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center whitespace-nowrap">SL NO</th>
+                                            <th class="text-center whitespace-nowrap">TITLE</th>
+                                            <th class="text-center whitespace-nowrap">AMOUNT</th>
+                                            <th class="text-center whitespace-nowrap">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for expense in indirect_expenses %}
+                                            <tr class="intro-x">
+                                                <td class="text-center">{{ forloop.counter }}</td>
+                                                
+                                                <td class="text-center">{{ expense.Title }}</td>
+
+                                                <td class="text-center">{{ expense.Amount }}</td>
+
+                                                <td class="table-report__action w-48">
+                                                    <div class="flex justify-center items-center">
+                                                        <a class="flex items-center text-danger" onclick="delete_expense('{{ expense.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#expense-delete-modal" title="delete"> 
+                                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr class="intro-x">
+                                            <td></td>
+                                            <td class="text-center justify-center text-primary">Total : </td>
+                                            <td class="text-center justify-center text-success">{{ indirect_expenses_total }}</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
+                                <table class="table table-report -mt-2">
+                                    <tbody>
+                                        <tr class="intro-x width"> 
+                                            <td class=" width" style="width:100%;">
+                                                <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
+                                                    background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
+                                                </i>
+                                            <div style="text-align: center;">No data available!</div>
+                                            </td>   
+                                        </tr>    
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-span-12 text-center">
+                        <h2 class="text-primary font-bold" style="font-size: 20px;">Grand Total : <span class="text-danger">{{ total_expense }}</span></h2>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- END: Profile Info -->
@@ -349,4 +482,58 @@
     </div>
 </div> 
 <!-- END:REQUISITION Modal Content -->
+
+<!-- BEGIN:Expense Delete Modal Content -->
+<div id="expense-delete-modal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'delete-expense' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="expense_id" id="expense_id">
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center"> <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to delete these records? <br>This process cannot be undone. </div>
+                    </div>
+                    <div class="px-5 pb-8 text-center"> 
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button> 
+                        <button type="submit" class="btn btn-danger w-24 text-white">Delete</button> 
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+<!-- END:Expense Delete Modal Content -->
+
+<!-- BEGIN:Expense Add Modal Content --> 
+<div id="add-expense-modal" class="modal" tabindex="-1" aria-hidden="true"> 
+    <div class="modal-dialog"> 
+        <div class="modal-content"> 
+            <div class="modal-body p-10 text-center">
+                <form action="{% url 'add-expense' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="project_id" value="{{project.id}}">
+                    <p>Add New Expense</p>
+                    <select name="category" id="" class="form-control mt-2" required>
+                        <option value="">Select Expense Category</option>
+                        <option value="1">Direct Expense</option>
+                        <option value="2">Indirect Expense</option>
+                    </select>
+                    <input type="text" name="title" placeholder="Enter Expense Title" class="form-control mt-2">
+                    <input type="number" step="0.01" name="amount" placeholder="Enter Expense Amount" class="form-control mt-2">
+                    <button class="btn btn-success text-white mt-3">Confirm</button>
+                </form>
+            </div> 
+        </div> 
+    </div> 
+</div> 
+<!-- END:Expense Add Modal Content --> 
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    function delete_expense(expense_id){
+        $('#expense_id').val(expense_id)
+    }
+</script>
 {% endblock content %}

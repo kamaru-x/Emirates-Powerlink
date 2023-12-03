@@ -7,4 +7,6 @@ urlpatterns = [
     path('details/<str:project_id>/',views.project_details,name='project-details'),
     path('edit/<str:project_id>/',views.edit_project,name='edit-project'),
     path('assign/pe/',views.assign_pe,name='assign-pe'),
+    path('expense/delete/',views.delete_expense,name='delete-expense'),
+    path('expense/add/',views.add_expense,name='add-expense')
 ]

@@ -37,3 +37,13 @@ class Project(models.Model):
 
     def __str__(self):
         return self.Client_Name
+    
+class Expense(models.Model):
+    Date = models.DateField(auto_now_add=True)
+    Project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    Category = models.IntegerField(default=0)
+    Title = models.CharField(max_length=55)
+    Amount = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.Title

@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from Projects.models import Project
+from Projects.models import Project,Expense
 from U_Auth.models import User
 from django.contrib import messages
 from Requisition.models import Requisition,Requisition_Item
-from django.db.models import Count
+from django.db.models import Count,Sum
 
 # Create your views here.
 
@@ -84,6 +84,13 @@ def project_details(request,project_id):
     project = Project.objects.get(Reference=project_id)
     project_engineers = User.objects.filter(Job_Role='Project Engineer')
     requisitions = Requisition.objects.filter(Project=project).annotate(items=Count('requisition_item'))
+    direct_expenses = Expense.objects.filter(Category=1)
+    indirect_expenses = Expense.objects.filter(Category=2)
+
+    direct_expenses_total = direct_expenses.aggregate(total_amount=Sum('Amount'))['total_amount'] or 0
+    indirect_expenses_total = indirect_expenses.aggregate(total_amount=Sum('Amount'))['total_amount'] or 0
+
+    total_expense = float(direct_expenses_total) + float(indirect_expenses_total)
 
     d_m = project.Department_Managers.all()
     p_e = project.Project_Engineers.all()
@@ -96,10 +103,14 @@ def project_details(request,project_id):
         'project' : project,
         'project_engineers' : project_engineers,
         'staffs' : staffs,
-        'requisitions' : requisitions
+        'requisitions' : requisitions,
+        'direct_expenses' : direct_expenses,
+        'indirect_expenses' : indirect_expenses,
+        'direct_expenses_total' : direct_expenses_total,
+        'indirect_expenses_total' : indirect_expenses_total,
+        'total_expense' : total_expense
     }
     return render(request,'Dashboard/Projects/project-details.html',context)
-
 
 #----------------------------------- EDIT PROJECT -----------------------------------#
 
@@ -154,3 +165,27 @@ def assign_pe(request):
         except Exception as exception:
             messages.warning(request,exception)
             return redirect('project-details',project_id=project.Reference)
+        
+#----------------------------------- DELETE EXPENSE -----------------------------------#
+
+@login_required
+def delete_expense(request):
+    expense_id = request.POST.get('expense_id')
+    expense = Expense.objects.get(id=expense_id)
+    project = expense.Project
+
+    expense.delete()
+    return redirect('project-details',project_id=project.Reference)
+
+#----------------------------------- ADD EXPENSE -----------------------------------#
+
+@login_required
+def add_expense(request):
+    project_id = request.POST.get('project_id')
+    project = Project.objects.get(id=project_id)
+    category = request.POST.get('category')
+    title = request.POST.get('title')
+    amount = request.POST.get('amount')
+
+    Expense.objects.create(Project=project,Category=category,Title=title,Amount=amount)
+    return redirect('project-details',project_id=project.Reference)
