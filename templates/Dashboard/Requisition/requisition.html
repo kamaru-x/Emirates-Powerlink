@@ -21,7 +21,13 @@
     {% endif %}
     <!-- BEGIN: Notification -->
 
-    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">MATERIAL REQUISITION FORM</h2>
+    <h2 class="text-primary text-center font-medium mt-10 py-5" style=" font-size: 30px;">
+        {% if requisition.Requisition_Type == 1 %}
+            MATERIAL REQUISITION FORM
+        {% elif requisition.Requisition_Type == 2 %}
+            SERVICE REQUISITION FORM
+        {% endif %}
+    </h2>
 
     <!-- BEGIN: Profile Info -->
     <div class="intro-y box px-5 pt-5 mt-5">
@@ -31,7 +37,7 @@
             <div class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 border-t lg:border-t-0 pt-5 lg:pt-0">
                 <div class="flex flex-col justify-center items-center mt-4">
                     <div class="truncate sm:whitespace-normal flex items-center">Requested By : {{ user }} </div>
-                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Project No : {{ requisition.Project.Reference }} </div>
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Job No : {{ requisition.Project.Job_No }} </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-3">Project Name : {{ requisition.Project.Project_Name }} </div>
                 </div>
             </div>
@@ -40,93 +46,188 @@
                 <div class="flex flex-col justify-center items-center mt-4">
                     <div class="truncate sm:whitespace-normal flex items-center">Requisition No : {{ requisition.Reference }} </div>
                     <div class="truncate sm:whitespace-normal flex items-center mt-3">Date : {{ requisition.Added_Date | date:'d M Y' }} </div>
+                    {% if requisition.Requisition_Type == 2 %}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3">Service No : SERVICE-00{{ service.id }} </div>   
+                    {% endif %}
                 </div>
             </div>
 
         </div>
 
-        <form action="{% url 'add-requisition-item' %}" id="rq-form" method="post" enctype="multipart/form-data" class="pt-5">
-            {% csrf_token %}
-            <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
-                <input type="hidden" name="requisition_id" value="{{ requisition.id }}">
-                <div class="intro-y col-span-12 sm:col-span-3">
-                    <label for="input-wizard-2" class="form-label">Category</label>
-                    <select name="" id="requisition-category" class="tom-select">
-                        <option value="">Search Category</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+        {% if requisition.Requisition_Type == 1 %}
+            <form action="{% url 'add-requisition-item' %}" id="rq-form" method="post" enctype="multipart/form-data" class="pt-5">
+                {% csrf_token %}
+                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
+                    <input type="hidden" name="requisition_id" value="{{ requisition.id }}">
+                    <div class="intro-y col-span-12 sm:col-span-3">
+                        <label for="input-wizard-2" class="form-label">Category</label>
+                        <select name="" id="requisition-category" class="tom-select">
+                            <option value="">Search Category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                <div class="intro-y col-span-12 sm:col-span-3">
-                    <label for="input-wizard-2" class="form-label">Product</label>
-                    <select name="product_id" id="response" class="form-control">
-                        <option value="">Select Products</option>
-                    </select>
-                </div>
+                    <div class="intro-y col-span-12 sm:col-span-3">
+                        <label for="input-wizard-2" class="form-label">Product</label>
+                        <select name="product_id" id="response" class="form-control">
+                            <option value="">Select Products</option>
+                        </select>
+                    </div>
 
-                <div class="intro-y col-span-2">
-                    <label for="input-wizard-2" class="form-label">Quantity</label>
-                    <input name="quantity" id="quantity" type="text" class="form-control" maxlength="25">
-                </div>
+                    <div class="intro-y col-span-2">
+                        <label for="input-wizard-2" class="form-label">Quantity</label>
+                        <input name="quantity" id="quantity" type="text" class="form-control" maxlength="25">
+                    </div>
 
-                <div class="intro-y col-span-3">
-                    <label for="input-wizard-2" class="form-label">Remarks</label>
-                    <input name="note" id="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
-                </div>
+                    <div class="intro-y col-span-3">
+                        <label for="input-wizard-2" class="form-label">Remarks</label>
+                        <input name="note" id="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+                    </div>
 
-                <div class="intro-y col-span-1">
-                    <button type="submit" id="add-item" class="btn btn-primary" style="margin-top: 28px;">ADD ITEM</button>
-                </div>
+                    <div class="intro-y col-span-1">
+                        <button type="submit" id="add-item" class="btn btn-primary" style="margin-top: 28px;">ADD ITEM</button>
+                    </div>
 
+                </div>
+            </form>
+
+            <div class="col-span-12 flex justify-center">
+                <button class="btn btn-primary btn-sm mt-3" id="anp">Add New Product</button>
             </div>
-        </form>
 
-        <h2 class="text-primary text-center font-medium py-10" style=" font-size: 20px;">Required Items</h2>
+            <form action="{% url 'add-new-item' %}" id="nrq-form" method="post" enctype="multipart/form-data" class="pt-5" style="display: none;">
+                {% csrf_token %}
+                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
+                    <input type="hidden" name="requisition_id" value="{{ requisition.id }}">
+                    <div class="intro-y col-span-2 sm:col-span-2">
+                        <label for="input-wizard-2" class="form-label">Category</label>
+                        <select name="category" id="requisition-category" class="tom-select">
+                            <option value="">Search Category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        <table class="table table-report sm:mt-2 pb-5">
-            <thead>
-                <tr>
-                    <th class="text-center whitespace-nowrap">SL NO</th>
-                    <th class="text-center whitespace-nowrap">NAME</th>
-                    <th class="text-center whitespace-nowrap">REFERENCE</th>
-                    <th class="text-center whitespace-nowrap">UNIT</th>
-                    <th class="text-center whitespace-nowrap">QUANTITY</th>
-                    <th class="text-center whitespace-nowrap">NOTE</th>
-                    <th class="text-center whitespace-nowrap">ACTIONS</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in rq_items %}
-                    <tr class="intro-x">
-                        <td class="text-center">
-                            {{ forloop.counter }}
-                        </td>
-                        <td class="text-center whitespace-nowrap">
-                            <a href="" class="font-medium text-primary">{{ item.Product }}</a>
-                        </td>
-                        <td class="text-center">
-                            {{ item.Product.Reference }} 
-                        </td>
-                        <td class="text-center">{{ item.Product.Unit }}</td>
-                        <td class="text-center">{{ item.Quantity }}</td>
-                        <td class="text-center">{{ item.Note }}</td>
-                        <td class="table-report__action w-48">
-                            <div class="flex justify-center items-center">
-                                <a class="flex items-center text-danger" onclick="delete_item('{{ item.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
-                                    <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
-                                </a>
-                            </div>
-                        </td>
+                    <div class="intro-y col-span-3 sm:col-span-2">
+                        <label for="input-wizard-2" class="form-label">Product Name</label>
+                        <input name="name" type="text" class="form-control" placeholder="Enter product name" maxlength="250">
+                    </div>
+
+                    <div class="intro-y col-span-2 sm:col-span-2">
+                        <label for="input-wizard-2" class="form-label">Unit</label>
+                        <input name="unit" type="text" class="form-control" placeholder="Enter product unit" maxlength="50">
+                    </div>
+
+                    <div class="intro-y col-span-2 sm:col-span-2">
+                        <label for="input-wizard-2" class="form-label">Quantity</label>
+                        <input name="quantity" type="number" class="form-control" placeholder="Enter product unit" maxlength="50">
+                    </div>
+
+                    <div class="intro-y col-span-2">
+                        <label for="input-wizard-2" class="form-label">Remarks</label>
+                        <input name="note" id="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+                    </div>
+
+                    <div class="intro-y col-span-1">
+                        <button type="submit" id="add-item" class="btn btn-primary" style="margin-top: 28px;">ADD ITEM</button>
+                    </div>
+
+                </div>
+            </form>
+
+            <h2 class="text-primary text-center font-medium py-10" style=" font-size: 20px;">Required Items</h2>
+
+            <table class="table table-report sm:mt-2 pb-5">
+                <thead>
+                    <tr>
+                        <th class="text-center whitespace-nowrap">SL NO</th>
+                        <th class="text-center whitespace-nowrap">NAME</th>
+                        <th class="text-center whitespace-nowrap">REFERENCE</th>
+                        <th class="text-center whitespace-nowrap">UNIT</th>
+                        <th class="text-center whitespace-nowrap">QUANTITY</th>
+                        <th class="text-center whitespace-nowrap">NOTE</th>
+                        <th class="text-center whitespace-nowrap">ACTIONS</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for item in rq_items %}
+                        <tr class="intro-x">
+                            <td class="text-center">
+                                {{ forloop.counter }}
+                            </td>
+                            <td class="text-center whitespace-nowrap">
+                                <a href="" class="font-medium text-primary">{{ item.Product }}</a>
+                            </td>
+                            <td class="text-center">
+                                {{ item.Product.Reference }} 
+                            </td>
+                            <td class="text-center">{{ item.Product.Unit }}</td>
+                            <td class="text-center">{{ item.Quantity }}</td>
+                            <td class="text-center">{{ item.Note }}</td>
+                            <td class="table-report__action w-48">
+                                <div class="flex justify-center items-center">
+                                    <a class="flex items-center text-danger" onclick="delete_item('{{ item.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                        <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-        <div class="col-span-12 flex justify-center">
-            <a href="{% url 'requisitions' %}" class="btn btn-primary mb-5">Submit</a>
-        </div>
+            <div class="col-span-12 flex justify-center mt-5">
+                <a href="{% url 'requisitions' %}" class="btn btn-primary mb-5">Submit</a>
+            </div>
+        {% endif %}
+
+        {% if requisition.Requisition_Type == 2 %}
+            <form action="{% url 'service-requisition' requisition.id %}" id="rq-form" method="post" enctype="multipart/form-data" class="pt-5">
+                {% csrf_token %}
+                <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Service Required</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter Service Title Here" {% if service.Title %} value="{{service.Title}}" {% endif %}>
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Add Attachments</label>
+                        <input type="file" name="attachments" class="form-control file2" multiple>
+                    </div>
+
+                    {% if attachments %}
+                    <div class="col-span-12">
+                        <div class="intro-y grid grid-cols-12 gap-3 sm:gap-6 mt-5">
+                            {% for attachment in attachments %}
+                                <div class="intro-y col-span-6 sm:col-span-2 md:col-span-2 2xl:col-span-2">
+                                    <div class="file box rounded-md px-5 pt-8 pb-5 px-3 sm:px-5 relative zoom-in">
+                                        <a href="{{ attachment.Attachment.url }}" target="_blank" class="w-3/5 file__icon file__icon--file mx-auto"></a>
+                                        <a href="{{ attachment.Attachment.url }}" target="_blank" class="block font-medium mt-4 text-center truncate">{{ attachment.Attachment.name|slice:"8:" }}</a> 
+                                        <div class="absolute top-0 right-0 mr-2 mt-3 dropdown ml-auto">
+                                            <a class="w-5 h-5 block" href="{% url 'delete_attachment' attachment.id %}" > 
+                                                <i data-lucide="x-circle" class="w-5 h-5 text-slate-500 text-danger"></i> 
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="intro-y col-span-12 sm:col-span-12">
+                        <label for="input-wizard-2" class="form-label">Service Description</label>
+                        <textarea name="description" id="" cols="30" rows="10" class="form-control" placeholder="Enter service description">{{service.Description}}</textarea>
+                    </div>
+                </div>
+                <div class="col-span-12 flex justify-center mt-5">
+                    <button type="submit" class="btn btn-primary mb-5">Submit</button>
+                </div>
+            </form>
+        {% endif %}
     </div>
     <!-- END: Profile Info -->
 </div>
@@ -160,6 +261,11 @@
     function delete_item(item_id){
         $('#item_id').val(item_id)
     }
+
+    $('#anp').on('click' , function(){
+        $('#rq-form').toggle()
+        $('#nrq-form').toggle()
+    })
 </script>
 
 {% endblock content %}

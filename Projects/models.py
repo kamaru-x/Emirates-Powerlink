@@ -17,6 +17,7 @@ class Project(models.Model):
     Edited_IP = models.GenericIPAddressField(null=True)
 
     Project_Name = models.CharField(max_length=100)
+    Job_No = models.CharField(max_length=50)
     project_Description = models.TextField(null=True)
     
     Client_Name = models.CharField(max_length=100)
@@ -28,6 +29,7 @@ class Project(models.Model):
     Contact_Number = models.CharField(max_length=15,null=True)
     
     Expected_Starting_Date = models.DateField(null=True)
+    Expected_Ending_Date = models.DateField(null=True)
     Expected_Amount = models.FloatField(null=True)
 
     Department_Managers = models.ManyToManyField(User,related_name='Department_Managers')

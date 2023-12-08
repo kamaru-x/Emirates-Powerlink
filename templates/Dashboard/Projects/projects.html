@@ -39,11 +39,11 @@
                         <tr>
                             <th class="text-center whitespace-nowrap">SL NO</th>
                             <th class="text-center whitespace-nowrap">PROJECT NAME</th>
-                            <th class="text-center whitespace-nowrap">REFERENCE</th>
+                            <th class="text-center whitespace-nowrap">JOB NO</th>
                             <th class="text-center whitespace-nowrap">CLIENT NAME</th>
-                            <th class="text-center whitespace-nowrap">CONTACT PERSON</th>
-                            <th class="text-center whitespace-nowrap">CONTACT NUMBER</th>
-                            <th class="text-center whitespace-nowrap">STATUS</th>
+                            <th class="text-center whitespace-nowrap">STARTING DATE</th>
+                            <th class="text-center whitespace-nowrap">ENDING DATE</th>
+                            <!-- <th class="text-center whitespace-nowrap">STATUS</th> -->
                             <th class="text-center whitespace-nowrap">ACTIONS</th>
                         </tr>
                     </thead>
@@ -57,12 +57,12 @@
                                     <a href="" class="font-medium text-primary">{{ project.Project_Name }}</a>
                                 </td>
                                 <td class="text-center">
-                                    {{ project.Reference }} 
+                                    {{ project.Job_No }} 
                                 </td>
                                 <td class="text-center">{{ project.Client_Name }}</td>
-                                <td class="text-center">{{ project.Contact_Name }}</td>
-                                <td class="text-center">{{ project.Contact_Number }}</td>
-                                <td class="text-center">STARTED</td>
+                                <td class="text-center">{{ project.Expected_Starting_Date | date:'d M Y' }}</td>
+                                <td class="text-center">{{ project.Expected_Ending_Date | date:'d M Y' }}</td>
+                                <!-- <td class="text-center">STARTED</td> -->
                                 <td class="table-report__action w-48">
                                     <div class="flex justify-center items-center">
                                         <a class="flex items-center mr-3 text-success" href="{% url 'project-details' project.Reference %}"> 

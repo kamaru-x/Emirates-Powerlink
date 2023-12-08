@@ -29,9 +29,7 @@
             <div class="flex flex-1 px-5 items-center justify-center">
                 <div class="ml-5 text-center">
                     <div class="sm:whitespace-normal font-medium text-lg">{{ project.Project_Name }}</div>
-                    <div class="text-slate-500 mt-2">REFERENCE : {{ project.Reference }}</div>
-                    <div class="text-slate-500 mt-2">EXPECTING START DATE : {{ project.Expected_Starting_Date | date:'d M Y' }}</div>
-                    <div class="text-slate-500 mt-2">EXPECTING FINAL AMOUNT : {{ project.Expected_Amount }}</div>
+                    <div class="text-slate-500 mt-2">JOB NO : {{ project.Job_No }}</div>
                 </div>
             </div>
         </div>
@@ -64,165 +62,53 @@
                         <span class="font-medium mr-2">Department Managers : </span> {% for dm in project.Department_Managers.all %} {{ dm }} {% endfor %} 
                     </div>
 
-                    {% if project.Project_Engineers.all %}
-                        <div class="truncate sm:whitespace-normal flex items-center mt-3"> 
-                            <i data-lucide="user" class="w-4 h-4 mr-2"></i>
-                            <span class="font-medium mr-2">Project Engineers : </span> {% for pe in project.Project_Engineers.all %} {{ pe }} {% endfor %} 
-                        </div>
-                    {% endif %}
+                    <div class="truncate sm:whitespace-normal flex items-center mt-3"> 
+                        <i data-lucide="user" class="w-4 h-4 mr-2"></i>
+                        <span class="font-medium mr-2">Project Engineers : </span>
+                        {% if project.Project_Engineers.all %}
+                            {% for pe in project.Project_Engineers.all %} {{ pe }} {% endfor %}
+                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview">
+                                <i data-lucide="edit" class="w-4 h-4 ml-2 font-bold"></i>
+                            </a>
+                        {% else %}
+                            <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview">
+                                <i data-lucide="plus-circle" class="w-4 h-4 ml-2 font-bold"></i>
+                            </a> 
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- <div class="flex flex-col lg:flex-row border-b border-slate-200/60 pb-5 -mx-5">
-            <div class="px-5 items-center">
-                <div class="grid grid-cols-12 gap-y-5 mt-5">
-                    
-                    {% if project.project_Descriptio %}
-                        <div class="col-span-12">
-                            <div class="text-slate-500 mt-2">{{ project.project_Description | safe }}</div>
-                        </div>
-                    {% endif %}
-  
-                </div>
-                <div class="col-span-12 mt-5 flex justify-center gap-4">
-                    {% if user.is_superuser or user.Job_Role == 'Department Manager' %}
-                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview" class="btn btn-primary">
-                            {% if project.Project_Engineers.all %}
-                                EDIT PROJECT ENGINEER
-                            {% else %}
-                                ASSIGN TO PROJECT ENGINEER
-                            {% endif %}
-                        </a> 
-                    {% endif %}
-
-                    {% if user.is_superuser or user.Job_Role == 'Project Engineer' %}
-                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary">CREATE REQUISITION</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div> -->
-
-        <div class="border-b border-slate-200/60 pb-5">
-            <div class="grid grid-cols-12 gap-y-5">
-
-                {% if project.project_Description %}
+        {% if project.project_Description %}
+            <div class="border-b border-slate-200/60 pb-5">
+                <div class="grid grid-cols-12 gap-y-5">
                     <div class="col-span-12">
                         <div class="text-slate-500 mt-2">{{ project.project_Description | safe }}</div>
                     </div>
-                {% endif %}
-
-                <div class="col-span-12 flex justify-center gap-4">
-                    {% if user.is_superuser or user.Job_Role == 'Department Manager' %}
-                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#basic-modal-preview" class="btn btn-primary">
-                            {% if project.Project_Engineers.all %}
-                                EDIT PROJECT ENGINEER
-                            {% else %}
-                                ASSIGN TO PROJECT ENGINEER
-                            {% endif %}
-                        </a> 
-                    {% endif %}
-
-                    {% if user.is_superuser or user.Job_Role == 'Project Engineer' %}
-                        <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary">CREATE REQUISITION</a>
-                    {% endif %}
                 </div>
-
             </div>
-        </div>
+        {% endif %}
 
-        <ul class="nav nav-link-tabs" role="tablist">
-            <!-- <li id="example-5-tab" class="nav-item flex-1" role="presentation">
-                <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-5" type="button" role="tab" aria-controls="example-tab-5" aria-selected="true">
-                    Employees Working on Project
+        <ul class="nav nav-link-tabs mt-2" role="tablist">
+
+            <!-- <li id="example-1-tab" class="nav-item flex-1" role="presentation">
+                <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-1" type="button" role="tab" aria-controls="example-tab-1" aria-selected="true">
+                    Expenses
                 </button>
             </li> -->
 
-            <li id="example-7-tab" class="nav-item flex-1" role="presentation">
-                <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-7" type="button" role="tab" aria-controls="example-tab-7" aria-selected="true">
-                    Expenses
-                </button>
-            </li>
-
-            <li id="example-6-tab" class="nav-item flex-1" role="presentation"> 
-                <button class="nav-link w-full py-2" data-tw-toggle="pill" data-tw-target="#example-tab-6" type="button" role="tab" aria-controls="example-tab-6" aria-selected="false">
+            <li id="example-2-tab" class="nav-item flex-1" role="presentation"> 
+                <button class="nav-link w-full py-2 active" data-tw-toggle="pill" data-tw-target="#example-tab-2" type="button" role="tab" aria-controls="example-tab-2" aria-selected="false">
                     Requisitions Created
                 </button> 
             </li>
         </ul>
 
         <div class="tab-content mt-5">
-            <!-- <div id="example-tab-5" class="tab-pane leading-relaxed active pb-10" role="tabpanel" aria-labelledby="example-5-tab"> 
-                {% if staffs %}
-                <div class="intro-y overflow-auto lg:overflow-visible">
-                    <table class="table table-report sm:mt-2">
-                        <thead>
-                            <tr>
-                                <th class="text-center whitespace-nowrap">SL NO</th>
-                                <th class="text-center whitespace-nowrap">NAME</th>
-                                <th class="text-center whitespace-nowrap">IMAGES</th>
-                                <th class="text-center whitespace-nowrap">STAFF ID</th>
-                                <th class="text-center whitespace-nowrap">JOB ROLE</th>
-                                <th class="text-center whitespace-nowrap">STAUS</th>
-                                <th class="text-center whitespace-nowrap">ACTIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for staff in staffs %}
-                                <tr class="intro-x">
-                                    <td class="text-center">{{ forloop.counter }}</td>
-                                    <td class="text-center">
-                                        <a href="" class="font-medium whitespace-nowrap text-primary">{{ staff.first_name }}</a> 
-                                    </td>
-                                    <td class="flex justify-center">
-                                        <div class="w-10 h-10 image-fit zoom-in">
-                                            {% if staff.Image %}
-                                                <img alt="" class="rounded-full" src="{{ staff.Image.url }}">
-                                            {% else %}
-                                                <img alt="" class="rounded-full" src="{% static 'dashboard/images/profile.jpg' %}">
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td class="text-center">{{ staff.Staff_ID }}</td>
-                                    <td class="text-center">{{ staff.Job_Role }}</td>
+            <div id="example-tab-2" class="tab-pane leading-relaxed pb-10 active" role="tabpanel" aria-labelledby="example-2-tab"> 
 
-                                    {% if staff.is_active %}
-                                        <td class="text-center text-success">ACTIVE</td>
-                                    {% else %}
-                                        <td class="text-center text-danger">INACTIVE</td>
-                                    {% endif %}
-
-                                    <td class="table-report__action w-48">
-                                        <div class="flex justify-center items-center">
-                                            <a class="flex items-center text-success" href="{% url 'staff-details' staff.username %}" title="view"> 
-                                                <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                    <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
-                        <table class="table table-report -mt-2">
-                            <tbody>
-                                <tr class="intro-x width"> 
-                                    <td class=" width" style="width:100%;">
-                                        <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
-                                            background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
-                                        </i>
-                                    <div style="text-align: center;">No data available!</div>
-                                    </td>   
-                                </tr>    
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
-            </div> -->
-            <div id="example-tab-6" class="tab-pane leading-relaxed pb-10" role="tabpanel" aria-labelledby="example-6-tab"> 
                 {% if requisitions %}
                     <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
                         <table class="table table-report sm:mt-2">
@@ -254,7 +140,9 @@
                                             <td class="text-center text-success">{{ requisition.Requisition_Status  }}</td>
                                         {% elif requisition.Requisition_Status == 'REJECTED' %}
                                             <td class="text-center text-danger">{{ requisition.Requisition_Status  }}</td>
-                                        {% else %}
+                                        {% elif requisition.Requisition_Status == 'CHECKED' %}
+                                            <td class="text-center text-primary">{{ requisition.Requisition_Status  }}</td>
+                                        {% elif requisition.Requisition_Status == 'PENDING' %}
                                             <td class="text-center text-warning">{{ requisition.Requisition_Status  }}</td>
                                         {% endif %}
 
@@ -297,9 +185,16 @@
                         </table>
                     </div>
                 {% endif %}
+
+                {% if user.is_superuser or user.Job_Role == 'Project Engineer' %}
+                    <div class="col-span-12 flex justify-center mt-3 gap-3">
+                        <a onclick="set_type(1)" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary btn-sm p-2">CREATE MATERIAL REQUISITION</a>
+                        <a onclick="set_type(2)" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-modal-preview" class="btn btn-primary btn-sm p-2">CREATE SERVICE REQUISITION</a>
+                    </div>
+                {% endif %}
             </div>
 
-            <div id="example-tab-7" class="tab-pane leading-relaxed pb-10 active" role="tabpanel" aria-labelledby="example-7-tab"> 
+            <!-- <div id="example-tab-1" class="tab-pane leading-relaxed pb-10" role="tabpanel" aria-labelledby="example-1-tab"> 
                 <div class="grid grid-cols-12 gap-6">
                     <div class="col-span-12 flex justify-end">
                         <a href="javascript:;" data-tw-toggle="modal" data-tw-target="#add-expense-modal">
@@ -424,7 +319,7 @@
                         <h2 class="text-primary font-bold" style="font-size: 20px;">Grand Total : <span class="text-danger">{{ total_expense }}</span></h2>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- END: Profile Info -->
@@ -467,6 +362,7 @@
         <div class="modal-content">
             <form action="{% url 'create-requisition' project.id %}" method="post">
                 {% csrf_token %}
+                <input type="hidden" name="type" id="type">
                 <div class="modal-body p-0">
                     <div class="p-5 text-center"> <i data-lucide="check-circle" class="w-16 h-16 text-success mx-auto mt-3"></i>
                         <div class="text-3xl mt-5">Are you sure?</div>
@@ -534,6 +430,9 @@
 <script>
     function delete_expense(expense_id){
         $('#expense_id').val(expense_id)
+    }
+    function set_type(id){
+        $('#type').val(id)
     }
 </script>
 {% endblock content %}

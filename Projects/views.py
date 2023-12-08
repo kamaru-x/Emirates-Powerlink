@@ -42,6 +42,7 @@ def create_project(request):
 
     if request.method == 'POST':
         project_name = request.POST.get('project_name')
+        job_no = request.POST.get('job-no')
         descriprion = request.POST.get('description')
 
         client_name = request.POST.get('client_name')
@@ -51,14 +52,15 @@ def create_project(request):
         contact_name = request.POST.get('contact_name')
         contact_mobile = request.POST.get('contact_mobile')
         department_managers = request.POST.getlist('department_managers')
-        expected_date = request.POST.get('expected_date') or None
+        expected_starting_date = request.POST.get('expected_starting_date') or None
+        expected_ending_date = request.POST.get('expected_ending_date') or None
         expected_amount = request.POST.get('expected_amount') or None
 
         try:
             project = Project.objects.create(Added_By=request.user,Added_IP=ip,Project_Name=project_name,project_Description=descriprion,
                                 Client_Name=client_name,Client_Mobile=client_mobile,Client_Email=client_email,Client_Address=client_address,
-                                Contact_Name=contact_name,Contact_Number=contact_mobile,Expected_Starting_Date=expected_date,
-                                Expected_Amount=expected_amount,Reference=reference)
+                                Contact_Name=contact_name,Contact_Number=contact_mobile,Expected_Starting_Date=expected_starting_date,
+                                Expected_Ending_Date=expected_ending_date,Expected_Amount=expected_amount,Reference=reference,Job_No=job_no)
             
             project.Department_Managers.set(department_managers)
             project.save()
@@ -83,7 +85,7 @@ def create_project(request):
 def project_details(request,project_id):
     project = Project.objects.get(Reference=project_id)
     project_engineers = User.objects.filter(Job_Role='Project Engineer')
-    requisitions = Requisition.objects.filter(Project=project).annotate(items=Count('requisition_item'))
+    requisitions = Requisition.objects.filter(Project=project).annotate(items=Count('requisition_item')).order_by('-id')
     direct_expenses = Expense.objects.filter(Category=1)
     indirect_expenses = Expense.objects.filter(Category=2)
 
@@ -121,6 +123,7 @@ def edit_project(request,project_id):
 
     if request.method == 'POST':
         project.Project_Name = request.POST.get('project_name')
+        project.Job_No = request.POST.get('job-no')
         project.project_Description = request.POST.get('description')
 
         project.Client_Name = request.POST.get('client_name')
@@ -131,7 +134,8 @@ def edit_project(request,project_id):
         project.Contact_Number = request.POST.get('contact_mobile')
         department_managers = request.POST.getlist('department_managers')
         project.Department_Managers.set(department_managers)
-        project.Expected_Starting_Date = request.POST.get('expected_date') or None
+        project.Expected_Starting_Date = request.POST.get('expected_starting_date') or None
+        project.Expected_Ending_Date = request.POST.get('expected_ending_date') or None
         project.Expected_Amount = request.POST.get('expected_amount') or None
 
         try:

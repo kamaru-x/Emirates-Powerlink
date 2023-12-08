@@ -25,7 +25,13 @@
     <!-- BEGIN: Weekly Top Products -->
     <div class="col-span-12 mt-6 border-t border-dark pt-5">
         <div class="intro-y block sm:flex items-center h-10">
-            <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
+            <div class="flex items-center sm:ml-auto mt-3 sm:mt-0 gap-3">
+                <select name="" id="" class="form-control w-64">
+                    <option value="">All Projects</option>
+                    {% for project in projects %}
+                        <option value="{{ project.id }}">{{ project.Job_No }}</option>
+                    {% endfor %}
+                </select>
                 <button class="btn btn-primary box flex items-center text-slate-600 dark:text-slate-300"> <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to Excel </button>
                 <!-- <a href="">
                     <button class="btn btn-primary ml-3">Add New requisition</button>
@@ -40,7 +46,7 @@
                             <th class="text-center whitespace-nowrap">SL NO</th>
                             <th class="text-center whitespace-nowrap">REFERENCE</th>
                             <th class="text-center whitespace-nowrap">PROJECT</th>
-                            <th class="text-center whitespace-nowrap">NUMBER OF ITEMS</th>
+                            <th class="text-center whitespace-nowrap">REQUISITION TYPE</th>
                             <th class="text-center whitespace-nowrap">CREATED DATE</th>
                             <th class="text-center whitespace-nowrap">CREATED BY</th>
                             <th class="text-center whitespace-nowrap">STATUS</th>
@@ -59,7 +65,13 @@
                                 <td class="text-center">
                                     {{ requisition.Project.Reference }} 
                                 </td>
-                                <td class="text-center">{{ requisition.items }}</td>
+
+                                {% if requisition.Requisition_Type == 1 %}
+                                    <td class="text-center">METERIAL</td>
+                                {% elif requisition.Requisition_Type == 2 %}
+                                    <td class="text-center">SERVICE</td>
+                                {% endif %}
+                                
                                 <td class="text-center">{{ requisition.Added_Date | date:'d M Y' }}</td>
                                 <td class="text-center">{{ requisition.Added_By }}</td>
 
@@ -67,7 +79,9 @@
                                     <td class="text-center text-success">{{ requisition.Requisition_Status  }}</td>
                                 {% elif requisition.Requisition_Status == 'REJECTED' %}
                                     <td class="text-center text-danger">{{ requisition.Requisition_Status  }}</td>
-                                {% else %}
+                                {% elif requisition.Requisition_Status == 'CHECKED' %}
+                                    <td class="text-center text-primary">{{ requisition.Requisition_Status  }}</td>
+                                {% elif requisition.Requisition_Status == 'PENDING' %}
                                     <td class="text-center text-warning">{{ requisition.Requisition_Status  }}</td>
                                 {% endif %}
 

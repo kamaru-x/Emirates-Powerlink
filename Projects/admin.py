@@ -5,7 +5,7 @@ from Projects.models import Project,Expense
 
 @admin.register(Project)
 class ProjectModelAdmin(admin.ModelAdmin):
-    list_display = ['Project_Name','Client_Name','Client_Mobile','Contact_Name','Contact_Number','Expected_Starting_Date','Expected_Amount']
+    list_display = ['Project_Name','Job_No','Client_Name','Client_Mobile','Contact_Name','Contact_Number']
 
 @admin.register(Expense)
 class ExpenseModelAdmin(admin.ModelAdmin):

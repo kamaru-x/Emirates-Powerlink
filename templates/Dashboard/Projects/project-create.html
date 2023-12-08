@@ -31,13 +31,18 @@
                 <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
                     <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="input-wizard-2" class="form-label">Project Name</label>
-                        <input name="project_name" id="category-name" type="text" class="form-control" placeholder="Enter project name here" required maxlength="100">
+                        <input name="project_name" type="text" class="form-control" placeholder="Enter project name here" required maxlength="100">
                     </div>
 
                     <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Job No</label>
+                        <input name="job-no" type="text" class="form-control" placeholder="Enter job no here" required maxlength="100">
+                    </div>
+
+                    <!-- <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="input-wizard-2" class="form-label">Reference</label>
                         <input name="project_id" value="{{reference}}" type="text" class="form-control" readonly maxlength="50">
-                    </div>
+                    </div> -->
 
                     <!-- <div class="col-span-12">
                         <h2 class="text-primary text-center font-medium my-5" style=" font-size: 20px;">Client Details</h2>
@@ -77,7 +82,7 @@
                         <input name="contact_mobile" type="text" class="form-control" placeholder="Enter contact person name here" maxlength="15">
                     </div>
 
-                    <div class="intro-y col-span-12 sm:col-span-4">
+                    <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="input-wizard-2" class="form-label">Department Managers</label>
                         <select name="department_managers" id="" class="tom-select" required>
                             <option value="">Select Department Managers</option>
@@ -87,14 +92,19 @@
                         </select>
                     </div>
 
-                    <div class="intro-y col-span-12 sm:col-span-4">
-                        <label for="input-wizard-2" class="form-label">Expected Starting Date</label>
-                        <input name="expected_date" type="date" class="form-control">
-                    </div>
-
-                    <div class="intro-y col-span-12 sm:col-span-4">
+                    <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="input-wizard-2" class="form-label">Expected Amount</label>
                         <input name="expected_amount" type="number" class="form-control" placeholder="Enter expected amount here">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Expected Starting Date</label>
+                        <input name="expected_starting_date" type="date" class="form-control">
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Expected Ending Date</label>
+                        <input name="expected_ending_date" type="date" class="form-control">
                     </div>
 
                     <div class="intro-y col-span-12 sm:col-span-12">
