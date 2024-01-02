@@ -389,7 +389,13 @@
                     <ul class="">
 
                         <li>
-                            <a href="{% url 'project-inventory' %}" class="top-menu">
+                            <a href="{% url 'inventory' %}" class="top-menu">
+                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
+                                <div class="top-menu__title"> Stock </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'projects-inv' %}" class="top-menu">
                                 <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
                                 <div class="top-menu__title"> Projects </div>
                             </a>

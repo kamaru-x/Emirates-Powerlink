@@ -5,20 +5,35 @@ from Quotation.models import QuotationItem
 
 # Create your models here.
 
-class Inventory(models.Model):
-    Project = models.ForeignKey(Project,on_delete=models.CASCADE)
+class Inventory_Category(models.Model):
     Date = models.DateField(auto_now_add=True)
-    Added_By = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
-
-    Reference = models.CharField(max_length=25)
+    Name =models.CharField(max_length=100)
 
     def __str__(self):
-        return self.Reference
+        return self.Name
     
 class InventoryItem(models.Model):
-    Inventory = models.ForeignKey(Inventory,on_delete=models.CASCADE)
-    Item = models.ForeignKey(QuotationItem,on_delete=models.CASCADE)
+    Category = models.ForeignKey(Inventory_Category,on_delete=models.CASCADE)
+    Reference = models.CharField(max_length=50)
+    Name = models.CharField(max_length=100)
     Quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.Inventory.Reference
+        return self.Name
+
+class Inventory_In(models.Model):
+    Date = models.DateField(auto_now_add=True)
+    Item = models.ForeignKey(InventoryItem,on_delete=models.CASCADE)
+    Quantity = models.IntegerField()
+
+    def __str__(self):
+        return self.Item
+    
+class Inventory_Out(models.Model):
+    Date = models.DateField(auto_now_add=True)
+    Project = models.ForeignKey(Project,on_delete=models.DO_NOTHING)
+    Item = models.ForeignKey(InventoryItem,on_delete=models.DO_NOTHING)
+    Quantity = models.CharField(max_length=20,null=True)
+
+    def __str__(self):
+        return self.Item
