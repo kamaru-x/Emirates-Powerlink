@@ -1,4 +1,4 @@
-def context_processor(request):
+def context(request):
     # Define your context variables
     context = {
         

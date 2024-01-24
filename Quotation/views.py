@@ -148,7 +148,7 @@ def lpos(request):
 @login_required
 def print_lpo(request,reference):
     lpo = LPO.objects.get(Reference=reference)
-    items = QuotationItem.objects.filter(Quotation=lpo.Quotation)
+    items = QuotationItem.objects.filter(Quotation=lpo.Quotation).exclude(Net=0)
 
     categories = []
     data = []

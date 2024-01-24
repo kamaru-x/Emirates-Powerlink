@@ -51,4 +51,62 @@ $(document).ready(function(){
         })
     })
     // username duplication end //
+
+    // sub category fetch start //
+    $('#m-cat').on('change' , function(){
+        var cat_id = $('#m-cat').val()
+
+        $.ajax({
+            url : '/get-sub-categories/',
+            type : 'POST',
+            data : {'cat-id':cat_id},
+
+            success : function(response){
+
+                if(response.sub_categories){
+                    $('#scat-div').show()
+                }else{
+                    $('#scat-div').hide()
+                }
+
+                html = '<option value="">Search Sub Category</option>'
+
+                for (let i = 0; i < response.sub_categories.length; i++) {
+                    html += '<option value="'+response.sub_categories[i].id+'">'+response.sub_categories[i].Name+'</option>'
+                }
+
+                $('#s-cat').html(html)
+            }
+        })
+    })
+    // sub category fetch end //
+
+    // sub in category fetch start //
+    $('#s-cat').on('change' , function(){
+        var cat_id = $('#s-cat').val()
+
+        $.ajax({
+            url : '/get-sub-in-categories/',
+            type : 'POST',
+            data : {'cat-id':cat_id},
+
+            success : function(response){
+
+                if(response.sub_in_categories){
+                    $('#sicat-div').show()
+                }else{
+                    $('#sicat-div').hide()
+                }
+
+                html = '<option value="">Search Sub Category</option>'
+
+                for (let i = 0; i < response.sub_in_categories.length; i++) {
+                    html += '<option value="'+response.sub_in_categories[i].id+'">'+response.sub_in_categories[i].Name+'</option>'
+                }
+
+                $('#si-cat').html(html)
+            }
+        })
+    })
+    // sub in category fetch start //
 })

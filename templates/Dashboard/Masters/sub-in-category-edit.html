@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block page %} 
-    <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
+    <li class="breadcrumb-item active" aria-current="page">Add Sub In Category</li>
 {% endblock page %}
 
 {% block content %}
@@ -23,54 +23,43 @@
 
     <div class="intro-y box py-10 sm:py-10 mt-5">
 
-        <h2 class="text-primary text-center font-medium" style=" font-size: 30px;">Edit Product</h2>
+        <h2 class="text-primary text-center font-medium" style=" font-size: 30px;">Add Sub In Category</h2>
         
         <div class="px-3 sm:px-10 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
                     <div class="intro-y col-span-12 sm:col-span-4">
-                        <label for="input-wizard-2" class="form-label">Category</label>
-                        <select name="category" id="m-cat" class="tom-select">
-                            <option value="{{ product.Category.id }}">{{product.Category}}</option>
+                        <label for="input-wizard-2" class="form-label">Select Category</label>
+                        <select name="category" id="m-cat" class="form-control">
+                            <option value="{{ category.Sub_Category.Category.id }}">{{ category.Sub_Category.Category }}</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category }}</option>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <div class="intro-y col-span-12 sm:col-span-4" {% if not product.Sub_Category %} style="display: none;" {% endif %} id="scat-div">
-                        <label for="input-wizard-2" class="form-label">Sub Category</label>
-                        <select name="sub_category" id="s-cat" class="form-control">
-                            <option value="{{ product.Sub_Category.id }}">{{ product.Sub_Category }}</option>
-                        </select>
-                    </div>
-
-                    <div class="intro-y col-span-12 sm:col-span-4" {% if not product.Sub_In_Category %} style="display: none;" {% endif %} id="sicat-div">
-                        <label for="input-wizard-2" class="form-label">Sub In Category</label>
-                        <select name="sub_in_category" id="si-cat" class="form-control">
-                            <option value="">Select Sub In Category</option>
-                        </select>
-                    </div>
-
                     <div class="intro-y col-span-12 sm:col-span-4">
-                        <label for="input-wizard-2" class="form-label">Name</label>
-                        <input value="{{ product.Name }}" name="name" type="text" class="form-control" placeholder="Enter product name" maxlength="250">
+                        <label for="input-wizard-2" class="form-label">Select Category</label>
+                        <select name="sub_category" id="s-cat" class="form-control">
+                            <option value="{{ category.Sub_Category.id }}">{{ category.Sub_Category }}</option>
+                        </select>
                     </div>
 
                     <div class="intro-y col-span-12 sm:col-span-4">
                         <label for="input-wizard-2" class="form-label">Reference</label>
-                        <input value="{{ product.Reference }}" name="product_id" type="text" class="form-control" readonly maxlength="25">
+                        <input name="ref" value="{{category.Reference}}" type="text" class="form-control" readonly maxlength="25">
                     </div>
 
-                    <div class="intro-y col-span-12 sm:col-span-4">
-                        <label for="input-wizard-2" class="form-label">Unit</label>
-                        <input value="{{ product.Unit }}" name="unit" type="text" class="form-control" placeholder="Enter product unit" maxlength="50">
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="input-wizard-2" class="form-label">Sub Category Name</label>
+                        <input value="{{ category.Name }}" name="name" id="category-name" type="text" class="form-control" placeholder="Enter category name here" required maxlength="100">
+                        <div id="error" class="text-danger mt-2" style="display: none;">Category already exists</div>
                     </div>
 
                     <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="input-wizard-2" class="form-label">Note</label>
-                        <input value="{{ product.Note }}" name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
+                        <input value="{{ category.Note }}" name="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
                     </div>
 
                     <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">

@@ -24,12 +24,6 @@
                 padding: 5px;
                 border-color: rgb(var(--color-slate-200) / var(--tw-border-opacity));
             }
-
-            .file2 {
-                border: solid 1px;
-                padding: 5px;
-                border-color: rgb(var(--color-slate-200) / var(--tw-border-opacity));
-            }
         </style>
     </head>
     <!-- END: Head -->
@@ -284,10 +278,30 @@
                         </a>
                         <ul class="">
                             <li>
-                                <a href="{% url 'categories' %}" class="top-menu">
+                                <a href="javascript:;" class="top-menu">
                                     <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
-                                    <div class="top-menu__title"> Categories </div>
+                                    <div class="top-menu__title"> Categories <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
                                 </a>
+                                <ul class="">
+                                    <li>
+                                        <a href="{% url 'categories' %}" class="top-menu">
+                                            <div class="top-menu__icon"> <i data-lucide="zap"></i> </div>
+                                            <div class="top-menu__title">Main Categories</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'sub-categories' %}" class="top-menu">
+                                            <div class="top-menu__icon"> <i data-lucide="zap"></i> </div>
+                                            <div class="top-menu__title">Sub Categories</div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'sub-in-categories' %}" class="top-menu">
+                                            <div class="top-menu__icon"> <i data-lucide="zap"></i> </div>
+                                            <div class="top-menu__title">Sub In Categories</div>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
                                 <a href="{% url 'products' %}" class="top-menu">
@@ -401,41 +415,6 @@
                             </a>
                         </li>
 
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript:;" class="top-menu">
-                        <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
-                        <div class="top-menu__title"> Apps <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
-                    </a>
-                    <ul class="">
-                        <li>
-                            <a href="javascript:;" class="top-menu">
-                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="top-menu__title"> Crud <i data-lucide="chevron-down" class="top-menu__sub-icon"></i> </div>
-                            </a>
-                            <ul class="">
-                                <li>
-                                    <a href="" class="top-menu">
-                                        <div class="top-menu__icon"> <i data-lucide="zap"></i> </div>
-                                        <div class="top-menu__title">Data List</div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="" class="top-menu">
-                                        <div class="top-menu__icon"> <i data-lucide="zap"></i> </div>
-                                        <div class="top-menu__title">Form</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="" class="top-menu">
-                                <div class="top-menu__icon"> <i data-lucide="activity"></i> </div>
-                                <div class="top-menu__title"> Inbox </div>
-                            </a>
-                        </li>
                     </ul>
                 </li>
             </ul>
