@@ -41,6 +41,8 @@
                             <th class="text-center whitespace-nowrap">NAME</th>
                             <th class="text-center whitespace-nowrap">CATEGORY</th>
                             <th class="text-center whitespace-nowrap">REFERENCE</th>
+                            <th class="text-center whitespace-nowrap">SUB IN CATEGORIES</th>
+                            <th class="text-center whitespace-nowrap">PRODUCTS</th>
                             <th class="text-center whitespace-nowrap">NOTE</th>
                             <th class="text-center whitespace-nowrap">ACTIONS</th>
                         </tr>
@@ -56,15 +58,20 @@
                                 </td>
                                 <td class="text-center font-medium">{{ category.Category }}</td>
                                 <td class="text-center">{{ category.Reference }}</td>
+                                <td class="text-center">{{ category.categories_count }}</td>
+                                <td class="text-center">{{ category.products_count }}</td>
                                 <td class="text-center">{{ category.Note }}</td>
 
                                 <td class="table-report__action w-48">
                                     <div class="flex justify-center items-center">
-                                        <a class="flex items-center mr-3 text-success" href="{% url 'view-category' category.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
+                                        <a class="flex items-center mr-3 text-success" href="{% url 'view-sub-category' category.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
                                         <a class="flex items-center mr-3 text-primary" href="{% url 'edit-sub-category' category.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
-                                        <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
-                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
-                                        </a>
+
+                                        {% if category.categories_count == 0 %}
+                                            <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                                <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>
@@ -88,35 +95,6 @@
                 </table>
             </div>
         {% endif %}
-        <div class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3">
-            <nav class="w-full sm:w-auto sm:mr-auto">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevrons-left"></i> </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevron-left"></i> </a>
-                    </li>
-                    <li class="page-item"> <a class="page-link" href="#">...</a> </li>
-                    <li class="page-item"> <a class="page-link" href="#">1</a> </li>
-                    <li class="page-item active"> <a class="page-link" href="#">2</a> </li>
-                    <li class="page-item"> <a class="page-link" href="#">3</a> </li>
-                    <li class="page-item"> <a class="page-link" href="#">...</a> </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevron-right"></i> </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#"> <i class="w-4 h-4" data-lucide="chevrons-right"></i> </a>
-                    </li>
-                </ul>
-            </nav>
-            <select class="w-20 form-select box mt-3 sm:mt-0">
-                <option>10</option>
-                <option>25</option>
-                <option>35</option>
-                <option>50</option>
-            </select>
-        </div>
     </div>
     <!-- END: Weekly Top Products -->
 </div>

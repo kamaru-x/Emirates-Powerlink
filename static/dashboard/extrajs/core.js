@@ -75,6 +75,8 @@ $(document).ready(function(){
                     html += '<option value="'+response.sub_categories[i].id+'">'+response.sub_categories[i].Name+'</option>'
                 }
 
+                html += '<option value="None">None</option>'
+
                 $('#s-cat').html(html)
             }
         })
@@ -103,6 +105,8 @@ $(document).ready(function(){
                 for (let i = 0; i < response.sub_in_categories.length; i++) {
                     html += '<option value="'+response.sub_in_categories[i].id+'">'+response.sub_in_categories[i].Name+'</option>'
                 }
+
+                html += '<option value="None">None</option>'
 
                 $('#si-cat').html(html)
             }

@@ -6,6 +6,10 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from U_Auth.models import User
+from Projects.models import Project
+from Requisition.models import Requisition
+from Quotation.models import Quotation
+from django.db.models import Count
 
 # Create your views here.
 
@@ -14,9 +18,18 @@ from U_Auth.models import User
 @login_required
 def dashboard(request):
     page = 'dashboard'
+    products = Product.objects.all()
+    projects = Project.objects.all()
+    requisitions = Requisition.objects.all()
+    quotations = Quotation.objects.all()
 
     context = {
-        'page' : page
+        'page' : page,
+        'products' : products.count(),
+        'projects' : projects.count(),
+        'requisitions' : requisitions.count(),
+        'quotations' : quotations.count(),
+        'recent_requisitions' : requisitions.order_by('-id')[:3]
     }
     return render(request,'Dashboard/Core/dashboard.html',context)
 
@@ -69,28 +82,41 @@ def add_category(request):
 
 @login_required
 def categories(request):
-    categories = Category.objects.all().order_by('-id')
-
-    if request.method == 'POST':
-        category_id = request.POST.get('category_id')
-        category = Category.objects.get(id=category_id)
-        category.delete()
-        return redirect('categories')
+    categories = Category.objects.annotate(
+        subcategories_count=Count('sub_category'),
+        products_count=Count('product')
+    ).order_by('-id')
 
     context = {
         'categories' : categories
     }
     return render(request,'Dashboard/Masters/categories.html',context)
 
+#----------------------------------- CATEGORY DELETE -----------------------------------#
+
+@login_required
+def delete_category(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        category = Category.objects.get(id=category_id)
+        category.delete()
+        messages.warning(request,'Category Deleted Successfully ... !')
+        return redirect('categories')
 #----------------------------------- CATEGORY VIEW -----------------------------------#
 
 @login_required
 def view_category(request,category_id):
     category = Category.objects.get(Reference=category_id)
+    categories = Sub_Category.objects.filter(Category=category).annotate(
+        categories_count=Count('sub_in_category'),
+        products_count=Count('product'),
+    ).order_by('-id')
+
     products = Product.objects.filter(Category=category)
 
     context = {
         'category' : category,
+        'categories' : categories,
         'products' : products
     }
     return render(request,'Dashboard/Masters/category-view.html',context)
@@ -126,7 +152,10 @@ def edit_category(request,category_id):
 
 @login_required
 def sub_categories(request):
-    categories = Sub_Category.objects.all().order_by('-id')
+    categories = Sub_Category.objects.annotate(
+        categories_count=Count('sub_in_category'),
+        products_count=Count('product')
+    ).order_by('-id')
 
     context = {
         'categories' : categories
@@ -195,6 +224,24 @@ def edit_sub_category(request,scid):
 
     return render(request,'Dashboard/Masters/sub-category-edit.html',context)
 
+#----------------------------------- VIEW SUB CATEGORY -----------------------------------#
+
+@login_required
+def view_sub_category(request,scid):
+    category = Sub_Category.objects.get(Reference=scid)
+    categories = Sub_In_Category.objects.filter(Sub_Category=category).annotate(
+        products_count=Count('product')
+    ).order_by('-id')
+
+    products = Product.objects.filter(Sub_Category=category)
+
+    context = {
+        'category' : category,
+        'categories' : categories,
+        'products' : products
+    }
+    return render(request,'Dashboard/Masters/sub-category-view.html',context)
+
 #----------------------------------- DELETE SUB CATEGORY -----------------------------------#
 
 @login_required
@@ -212,7 +259,9 @@ def delete_sub_category(request):
     
 @login_required
 def sub_in_categories(request):
-    categories = Sub_In_Category.objects.all().order_by('-id')
+    categories = Sub_In_Category.objects.annotate(
+        products_count=Count('product')
+    ).order_by('-id')
 
     context = {
         'categories' : categories
@@ -290,6 +339,19 @@ def edit_sub_in_category(request,sicid):
         'categories' : categories
     }
     return render(request,'Dashboard/Masters/sub-in-category-edit.html',context)
+
+#----------------------------------- VIEW SUB IN CATEGORY -----------------------------------#
+
+@login_required
+def view_sub_in_category(request,sicid):
+    category = Sub_In_Category.objects.get(Reference=sicid)
+    products = Product.objects.filter(Sub_In_Category=category)
+
+    context = {
+        'category' : category,
+        'products' : products
+    }
+    return render(request,'Dashboard/Masters/sub-in-category-view.html',context)
 
 #----------------------------------- DELETE SUB IN CATEGORY -----------------------------------#
 
@@ -427,17 +489,21 @@ def edit_staff(request,username):
 def products(request):
     products = Product.objects.all().order_by('-id')
 
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        product = Product.objects.get(id=product_id)
-        product.delete()
-
-        return redirect('products')
-
     context = {
         'products' : products
     }
     return render(request,'Dashboard/Masters/products.html',context)
+
+#----------------------------------- DELETE PRODUCT -----------------------------------#
+
+@login_required
+def delete_product(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = Product.objects.get(id=product_id)
+        product.delete()
+        messages.warning(request,'Product Deleted Successfully ... !')
+        return redirect('products')
 
 #----------------------------------- GET SUB IN CATEGORY -----------------------------------#
 

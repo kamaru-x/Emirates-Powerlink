@@ -3,6 +3,7 @@
 
 {% block page %} 
     <li class="breadcrumb-item" aria-current="page">Category</li>
+    <li class="breadcrumb-item" aria-current="page">{{ category.Category }}</li>
     <li class="breadcrumb-item active" aria-current="page">{{ category }}</li>
 {% endblock page %}
 
@@ -24,7 +25,7 @@
 
     <h2 class="text-primary text-center font-medium mt-10 border-b pb-5" style=" font-size: 35px;">{{ category.Name }}</h2>
 
-    <h2 class="text-primary text-center font-medium mt-5" style=" font-size: 20px;">SUB CATEGORIES</h2>
+    <h2 class="text-primary text-center font-medium mt-5" style=" font-size: 20px;">SUB IN CATEGORIES</h2>
 
     <div class="col-span-12 mt-6 border-dark">
         {% if categories %}
@@ -35,7 +36,6 @@
                             <th class="text-center whitespace-nowrap">SL NO</th>
                             <th class="text-center whitespace-nowrap">NAME</th>
                             <th class="text-center whitespace-nowrap">REFERENCE</th>
-                            <th class="text-center whitespace-nowrap">SUB IN CATEGORIES</th>
                             <th class="text-center whitespace-nowrap">PRODUCTS</th>
                             <th class="text-center whitespace-nowrap">NOTE</th>
                             <th class="text-center whitespace-nowrap">ACTIONS</th>
@@ -51,17 +51,16 @@
                                     <a href="" class="font-medium text-primary">{{ category.Name }}</a>
                                 </td>
                                 <td class="text-center">{{ category.Reference }}</td>
-                                <td class="text-center">{{ category.categories_count }}</td>
                                 <td class="text-center">{{ category.products_count }}</td>
                                 <td class="text-center">{{ category.Note }}</td>
 
                                 <td class="table-report__action w-48">
                                     <div class="flex justify-center items-center">
-                                        <a class="flex items-center mr-3 text-success" href="{% url 'view-sub-category' category.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
+                                        <a class="flex items-center mr-3 text-success" href="{% url 'view-category' category.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
                                         <a class="flex items-center mr-3 text-primary" href="{% url 'edit-sub-category' category.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
                                         
-                                        {% if category.categories_count == 0 %}
-                                            <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                        {% if category.products_count == 0 %}
+                                            <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-category" title="delete"> 
                                                 <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
                                             </a>
                                         {% endif %}
@@ -182,7 +181,7 @@
 <!-- BEGIN: Delete Confirmation Modal -->
 <div id="delete-category" class="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="" method="post">
+        <form action="{% url 'delete-sub-category' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="category_id" id="category_id">
             <div class="modal-content">

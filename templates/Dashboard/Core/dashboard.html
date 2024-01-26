@@ -16,169 +16,171 @@
                         <a href="" class="ml-auto flex items-center text-primary"> <i data-lucide="refresh-ccw" class="w-4 h-4 mr-3"></i> Reload Data </a>
                     </div>
                     <div class="grid grid-cols-12 gap-6 mt-5">
+
                         <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                            <div class="report-box zoom-in">
-                                <div class="box p-5">
-                                    <div class="flex">
-                                        <i data-lucide="shopping-cart" class="report-box__icon text-primary"></i> 
-                                        <div class="ml-auto">
-                                            <div class="report-box__indicator bg-success tooltip cursor-pointer" title="33% Higher than last month"> 33% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
+                            <a href="{% url 'products' %}">
+                                <div class="report-box zoom-in">
+                                    <div class="box p-5">
+                                        <div class="flex">
+                                            <i data-lucide="shopping-cart" class="report-box__icon text-primary"></i> 
+                                            <!-- <div class="ml-auto">
+                                                <div class="report-box__indicator bg-success tooltip cursor-pointer" title="33% Higher than last month"> 33% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
+                                            </div> -->
                                         </div>
+                                        <div class="text-3xl font-medium leading-8 mt-6">{{ products }}</div>
+                                        <div class="text-base text-slate-500 mt-1">Total Materials</div>
                                     </div>
-                                    <div class="text-3xl font-medium leading-8 mt-6">4.710</div>
-                                    <div class="text-base text-slate-500 mt-1">Item Sales</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                            <div class="report-box zoom-in">
-                                <div class="box p-5">
-                                    <div class="flex">
-                                        <i data-lucide="credit-card" class="report-box__icon text-pending"></i> 
-                                        <div class="ml-auto">
-                                            <div class="report-box__indicator bg-danger tooltip cursor-pointer" title="2% Lower than last month"> 2% <i data-lucide="chevron-down" class="w-4 h-4 ml-0.5"></i> </div>
+                            <a href="{% url 'projects' %}">
+                                <div class="report-box zoom-in">
+                                    <div class="box p-5">
+                                        <div class="flex">
+                                            <i data-lucide="box" class="report-box__icon text-pending"></i> 
+                                            <!-- <div class="ml-auto">
+                                                <div class="report-box__indicator bg-danger tooltip cursor-pointer" title="2% Lower than last month"> 2% <i data-lucide="chevron-down" class="w-4 h-4 ml-0.5"></i> </div>
+                                            </div> -->
                                         </div>
+                                        <div class="text-3xl font-medium leading-8 mt-6">{{ projects }}</div>
+                                        <div class="text-base text-slate-500 mt-1">Total Projects</div>
                                     </div>
-                                    <div class="text-3xl font-medium leading-8 mt-6">3.721</div>
-                                    <div class="text-base text-slate-500 mt-1">New Orders</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                            <div class="report-box zoom-in">
-                                <div class="box p-5">
-                                    <div class="flex">
-                                        <i data-lucide="monitor" class="report-box__icon text-warning"></i> 
-                                        <div class="ml-auto">
-                                            <div class="report-box__indicator bg-success tooltip cursor-pointer" title="12% Higher than last month"> 12% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
+                            <a href="{% url 'requisitions' %}">
+                                <div class="report-box zoom-in">
+                                    <div class="box p-5">
+                                        <div class="flex">
+                                            <i data-lucide="box" class="report-box__icon text-warning"></i> 
+                                            <!-- <div class="ml-auto">
+                                                <div class="report-box__indicator bg-success tooltip cursor-pointer" title="12% Higher than last month"> 12% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
+                                            </div> -->
                                         </div>
+                                        <div class="text-3xl font-medium leading-8 mt-6">{{ requisitions }}</div>
+                                        <div class="text-base text-slate-500 mt-1">Total Requisitions Created</div>
                                     </div>
-                                    <div class="text-3xl font-medium leading-8 mt-6">2.149</div>
-                                    <div class="text-base text-slate-500 mt-1">Total Products</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
+
                         <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                            <div class="report-box zoom-in">
-                                <div class="box p-5">
-                                    <div class="flex">
-                                        <i data-lucide="user" class="report-box__icon text-success"></i> 
-                                        <div class="ml-auto">
-                                            <div class="report-box__indicator bg-success tooltip cursor-pointer" title="22% Higher than last month"> 22% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
+                            <a href="{% url 'quotations' %}">
+                                <div class="report-box zoom-in">
+                                    <div class="box p-5">
+                                        <div class="flex">
+                                            <i data-lucide="box" class="report-box__icon text-success"></i> 
+                                            <!-- <div class="ml-auto">
+                                                <div class="report-box__indicator bg-success tooltip cursor-pointer" title="22% Higher than last month"> 22% <i data-lucide="chevron-up" class="w-4 h-4 ml-0.5"></i> </div>
+                                            </div> -->
                                         </div>
+                                        <div class="text-3xl font-medium leading-8 mt-6">{{ quotations }}</div>
+                                        <div class="text-base text-slate-500 mt-1">Total Quotations</div>
                                     </div>
-                                    <div class="text-3xl font-medium leading-8 mt-6">152.040</div>
-                                    <div class="text-base text-slate-500 mt-1">Unique Visitor</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <!-- END: General Report -->
 
                 <!-- BEGIN: Sales Report -->
-                <div class="col-span-12 lg:col-span-6 mt-8">
+                <div class="col-span-12 lg:col-span-12 mt-8">
                     <div class="intro-y block sm:flex items-center h-10">
                         <h2 class="text-lg font-medium truncate mr-5">
-                            Sales Report
+                            Recent Requisitions
                         </h2>
                     </div>
-                    <div class="intro-y box p-5 mt-12 sm:mt-5">
-                        <div class="flex flex-col md:flex-row md:items-center">
-                            <div class="flex">
-                                <div>
-                                    <div class="text-primary dark:text-slate-300 text-lg xl:text-xl font-medium">$15,000</div>
-                                    <div class="mt-0.5 text-slate-500">This Month</div>
-                                </div>
-                                <div class="w-px h-12 border border-r border-dashed border-slate-200 dark:border-darkmode-300 mx-4 xl:mx-5"></div>
-                                <div>
-                                    <div class="text-slate-500 text-lg xl:text-xl font-medium">$10,000</div>
-                                    <div class="mt-0.5 text-slate-500">Last Month</div>
-                                </div>
-                            </div>
-                            <div class="dropdown md:ml-auto mt-5 md:mt-0">
-                                <button class="dropdown-toggle btn btn-outline-secondary font-normal" aria-expanded="false" data-tw-toggle="dropdown"> Filter by Category <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i> </button>
-                                <div class="dropdown-menu w-40">
-                                    <ul class="dropdown-content overflow-y-auto h-32">
-                                        <li><a href="" class="dropdown-item">PC & Laptop</a></li>
-                                        <li><a href="" class="dropdown-item">Smartphone</a></li>
-                                        <li><a href="" class="dropdown-item">Electronic</a></li>
-                                        <li><a href="" class="dropdown-item">Photography</a></li>
-                                        <li><a href="" class="dropdown-item">Sport</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="report-chart">
-                            <div class="h-[275px]">
-                                <canvas id="report-line-chart" class="mt-6 -mb-6"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Sales Report -->
+                    {% if recent_requisitions %}
+                        <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
+                            <table class="table table-report sm:mt-2">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center whitespace-nowrap">SL NO</th>
+                                        <th class="text-center whitespace-nowrap">REFERENCE</th>
+                                        <th class="text-center whitespace-nowrap">PROJECT</th>
+                                        <th class="text-center whitespace-nowrap">REQUISITION TYPE</th>
+                                        <th class="text-center whitespace-nowrap">CREATED DATE</th>
+                                        <th class="text-center whitespace-nowrap">CREATED BY</th>
+                                        <th class="text-center whitespace-nowrap">STATUS</th>
+                                        <th class="text-center whitespace-nowrap">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for requisition in recent_requisitions %}
+                                        <tr class="intro-x">
+                                            <td class="text-center">
+                                                {{ forloop.counter }}
+                                            </td>
+                                            <td class="text-center whitespace-nowrap">
+                                                <a href="" class="font-medium text-primary">{{ requisition.Reference }}</a>
+                                            </td>
+                                            <td class="text-center">
+                                                {{ requisition.Project.Reference }} 
+                                            </td>
 
-                <!-- BEGIN: Weekly Top Seller -->
-                <div class="col-span-12 sm:col-span-6 lg:col-span-3 mt-8">
-                    <div class="intro-y flex items-center h-10">
-                        <h2 class="text-lg font-medium truncate mr-5">
-                            Weekly Top Seller
-                        </h2>
-                        <a href="" class="ml-auto text-primary truncate">Show More</a> 
-                    </div>
-                    <div class="intro-y box p-5 mt-5">
-                        <div class="mt-3">
-                            <div class="h-[213px]">
-                                <canvas id="report-pie-chart"></canvas>
-                            </div>
-                        </div>
-                        <div class="w-52 sm:w-auto mx-auto mt-8">
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                                <span class="truncate">17 - 30 Years old</span> <span class="font-medium ml-auto">62%</span> 
-                            </div>
-                            <div class="flex items-center mt-4">
-                                <div class="w-2 h-2 bg-pending rounded-full mr-3"></div>
-                                <span class="truncate">31 - 50 Years old</span> <span class="font-medium ml-auto">33%</span> 
-                            </div>
-                            <div class="flex items-center mt-4">
-                                <div class="w-2 h-2 bg-warning rounded-full mr-3"></div>
-                                <span class="truncate">>= 50 Years old</span> <span class="font-medium ml-auto">10%</span> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Weekly Top Seller -->
+                                            {% if requisition.Requisition_Type == 1 %}
+                                                <td class="text-center">METERIAL</td>
+                                            {% elif requisition.Requisition_Type == 2 %}
+                                                <td class="text-center">SERVICE</td>
+                                            {% endif %}
+                                            
+                                            <td class="text-center">{{ requisition.Added_Date | date:'d M Y' }}</td>
+                                            <td class="text-center">{{ requisition.Added_By }}</td>
 
-                <!-- BEGIN: Sales Report -->
-                <div class="col-span-12 sm:col-span-6 lg:col-span-3 mt-8">
-                    <div class="intro-y flex items-center h-10">
-                        <h2 class="text-lg font-medium truncate mr-5">
-                            Sales Report
-                        </h2>
-                        <a href="" class="ml-auto text-primary truncate">Show More</a> 
-                    </div>
-                    <div class="intro-y box p-5 mt-5">
-                        <div class="mt-3">
-                            <div class="h-[213px]">
-                                <canvas id="report-donut-chart"></canvas>
-                            </div>
+                                            {% if requisition.Requisition_Status == 'APPROVED' %}
+                                                <td class="text-center text-success">{{ requisition.Requisition_Status  }}</td>
+                                            {% elif requisition.Requisition_Status == 'REJECTED' %}
+                                                <td class="text-center text-danger">{{ requisition.Requisition_Status  }}</td>
+                                            {% elif requisition.Requisition_Status == 'CHECKED' %}
+                                                <td class="text-center text-primary">{{ requisition.Requisition_Status  }}</td>
+                                            {% elif requisition.Requisition_Status == 'PENDING' %}
+                                                <td class="text-center text-warning">{{ requisition.Requisition_Status  }}</td>
+                                            {% endif %}
+
+                                            <td class="table-report__action w-48">
+                                                <div class="flex justify-center items-center">
+
+                                                    <a class="flex items-center mr-3 text-success" href="{% url 'view-requisition' requisition.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
+                                                    
+                                                    {% if requisition.Requisition_Status == 'PENDING' %}
+                                                        <a class="flex items-center mr-3 text-primary" href="{% url 'requisition' requisition.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
+                                                    {% endif %}
+
+                                                    {% if requisition.Requisition_Status == 'APPROVED' %}
+                                                        <a class="flex items-center mr-3 text-primary" href="{% url 'compare' requisition.Reference %}" title="quotations"> <i data-lucide="file" class="w-4 h-4 mr-1"></i></a>
+                                                    {% endif %}
+
+                                                    <!-- <a class="flex items-center text-danger" onclick="delete_requisition('{{ requisition.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
+                                                        <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                                    </a> -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="w-52 sm:w-auto mx-auto mt-8">
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                                <span class="truncate">17 - 30 Years old</span> <span class="font-medium ml-auto">62%</span> 
-                            </div>
-                            <div class="flex items-center mt-4">
-                                <div class="w-2 h-2 bg-pending rounded-full mr-3"></div>
-                                <span class="truncate">31 - 50 Years old</span> <span class="font-medium ml-auto">33%</span> 
-                            </div>
-                            <div class="flex items-center mt-4">
-                                <div class="w-2 h-2 bg-warning rounded-full mr-3"></div>
-                                <span class="truncate">>= 50 Years old</span> <span class="font-medium ml-auto">10%</span> 
-                            </div>
+                    {% else %}
+                        <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible mt-3">
+                            <table class="table table-report -mt-2">
+                                <tbody>
+                                    <tr class="intro-x width"> 
+                                        <td class=" width" style="width:100%;">
+                                            <i data-lucide="hard-drive" style="width:60px; height:60px; margin-left: auto; margin-right: auto; display: block; padding: 10px; border-radius: 50%;
+                                                background: #e8e4e4;" class="w-4 h-4 mr-2 text-primary">  
+                                            </i>
+                                        <div style="text-align: center;">No data available!</div>
+                                        </td>   
+                                    </tr>    
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
                 <!-- END: Sales Report -->
 

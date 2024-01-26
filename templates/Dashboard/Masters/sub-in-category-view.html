@@ -2,7 +2,10 @@
 {% load static %}
 
 {% block page %} 
-    <li class="breadcrumb-item active" aria-current="page">Manage Sub In Categories</li>
+    <li class="breadcrumb-item" aria-current="page">Category</li>
+    <li class="breadcrumb-item" aria-current="page">{{ category.Sub_Category.Category }}</li>
+    <li class="breadcrumb-item" aria-current="page">{{ category.Sub_Category.Category }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ category }}</li>
 {% endblock page %}
 
 {% block content %}
@@ -21,18 +24,13 @@
     {% endif %}
     <!-- BEGIN: Notification -->
 
-    <h2 class="text-primary text-center font-medium mt-10" style=" font-size: 30px;">Manage Sub In Categories</h2>
+    <h2 class="text-primary text-center font-medium mt-10 border-b pb-5" style=" font-size: 35px;">{{ category.Name }}</h2>
+
     <!-- BEGIN: Weekly Top Products -->
-    <div class="col-span-12 mt-6 border-t border-dark pt-5">
-        <div class="intro-y block sm:flex items-center h-10">
-            <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
-                <button class="btn btn-primary box flex items-center text-slate-600 dark:text-slate-300"> <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to Excel </button>
-                <a href="{% url 'add-sub-in-category' %}">
-                    <button class="btn btn-primary ml-3">Add New Sub In Category</button>
-                </a>    
-            </div>
-        </div>
-        {% if categories %}
+    <h2 class="text-primary text-center font-medium mt-5" style=" font-size: 20px;">PRODUCTS</h2>
+
+    <div class="col-span-12 mt-6 border-dark">
+        {% if products %}
             <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
                 <table class="table table-report sm:mt-2">
                     <thead>
@@ -40,38 +38,32 @@
                             <th class="text-center whitespace-nowrap">SL NO</th>
                             <th class="text-center whitespace-nowrap">NAME</th>
                             <th class="text-center whitespace-nowrap">REFERENCE</th>
-                            <th class="text-center whitespace-nowrap">SUB CATEGORY</th>
-                            <th class="text-center whitespace-nowrap">CATEGORY</th>
-                            <th class="text-center whitespace-nowrap">PRODUCTS</th>
                             <th class="text-center whitespace-nowrap">NOTE</th>
+                            <th class="text-center whitespace-nowrap">ADDED DATE</th>
                             <th class="text-center whitespace-nowrap">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for category in categories %}
+                        {% for product in products %}
                             <tr class="intro-x">
                                 <td class="text-center">
                                     {{ forloop.counter }}
                                 </td>
                                 <td class="text-center whitespace-nowrap">
-                                    <a href="" class="font-medium text-primary">{{ category.Name }}</a>
+                                    <a href="" class="font-medium text-primary">{{ product.Name }}</a>
                                 </td>
-                                <td class="text-center font-medium">{{ category.Reference }}</td>
-                                <td class="text-center font-medium">{{ category.Sub_Category }}</td>
-                                <td class="text-center font-medium">{{ category.Sub_Category.Category }}</td>
-                                <td class="text-center font-medium">{{ category.products_count }}</td>
-                                <td class="text-center">{{ category.Note }}</td>
-
+                                <td class="text-center">
+                                    {{ product.Reference }} 
+                                </td>
+                                <td class="text-center">{{ product.Note }}</td>
+                                <td class="text-center">{{ product.Added_Date | date:'d M Y' }}</td>
                                 <td class="table-report__action w-48">
                                     <div class="flex justify-center items-center">
-                                        <a class="flex items-center mr-3 text-success" href="{% url 'view-sub-in-category' category.Reference %}"> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a>
-                                        <a class="flex items-center mr-3 text-primary" href="{% url 'edit-sub-in-category' category.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
-                                        
-                                        {% if category.products_count == 0  %}
-                                            <a class="flex items-center text-danger" onclick="delete_category('{{ category.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" title="delete"> 
-                                                <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
-                                            </a>
-                                        {% endif %}
+                                        <!-- <a class="flex items-center mr-3 text-success" href=""> <i data-lucide="eye" class="w-4 h-4 mr-1"></i></a> -->
+                                        <a class="flex items-center mr-3 text-primary" href="{% url 'edit-product' product.Reference %}" title="edit"> <i data-lucide="edit" class="w-4 h-4 mr-1"></i></a>
+                                        <a class="flex items-center text-danger" onclick="delete_product('{{ product.id }}')" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-product" title="delete"> 
+                                            <i data-lucide="trash" class="w-4 h-4 mr-1"></i>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -100,9 +92,33 @@
 </div>
 
 <!-- BEGIN: Delete Confirmation Modal -->
-<div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+<div id="delete-product" class="modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="{% url 'delete-sub-in-category' %}" method="post">
+        <form action="{% url 'delete-product' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" id="product_id">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center">
+                        <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">Do you really want to delete these records? <br>This process cannot be undone.</div>
+                    </div>
+                    <div class="px-5 pb-8 text-center">
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                        <button type="submit" class="btn btn-danger w-24">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- END: Delete Confirmation Modal -->
+
+<!-- BEGIN: Delete Confirmation Modal -->
+<div id="delete-category" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{% url 'delete-sub-category' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="category_id" id="category_id">
             <div class="modal-content">
@@ -125,6 +141,10 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
+    function delete_product(product_id){
+        $('#product_id').val(product_id)
+    }
+
     function delete_category(category_id){
         $('#category_id').val(category_id)
     }
