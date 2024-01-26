@@ -61,11 +61,25 @@
                     <input type="hidden" name="requisition_id" value="{{ requisition.id }}">
                     <div class="intro-y col-span-12 sm:col-span-3">
                         <label for="input-wizard-2" class="form-label">Category</label>
-                        <select name="" id="requisition-category" class="tom-select">
+                        <select name="" id="m-cat" class="tom-select">
                             <option value="">Search Category</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category }}</option>
                             {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-4" style="display: none;" id="scat-div">
+                        <label for="input-wizard-2" class="form-label">Sub Category</label>
+                        <select name="sub_category" id="s-cat" class="form-control">
+                            <option value="">Select Sub Category</option>
+                        </select>
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-4" style="display: none;" id="sicat-div">
+                        <label for="input-wizard-2" class="form-label">Sub In Category</label>
+                        <select name="sub_in_category" id="si-cat" class="form-control">
+                            <option value="">Select Sub In Category</option>
                         </select>
                     </div>
 

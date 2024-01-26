@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from U_Auth.models import User
 from Projects.models import Project
 from Requisition.models import Requisition,Requisition_Item,Service,Service_Attachment
-from Core.models import Category,Product
+from Core.models import Category,Product,Sub_Category,Sub_In_Category
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.db.models import Count
@@ -58,9 +58,23 @@ def requisition(request,reference):
 @csrf_exempt
 def get_products(request):
     category_id = request.POST.get('category_id')
-    category = Category.objects.get(id=category_id)
+    sub_category_id = request.POST.get('sub_category_id')
+    sub_in_category_id = request.POST.get('sub_in_category_id')
 
+    category = Category.objects.get(id=category_id)
     products = Product.objects.filter(Category=category)
+
+    try:
+        sub_category = Sub_Category.objects.get(id=sub_category_id)
+        products.filter(Sub_Category=sub_category)
+    except:
+        pass
+
+    try:
+        sub_in_category = Sub_In_Category.objects.get(id=sub_in_category_id)
+        products.filter(Sub_In_Category=sub_in_category)
+    except:
+        pass
 
     products_data = [{
         'id': product.id, 

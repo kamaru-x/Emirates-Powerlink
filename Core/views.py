@@ -82,9 +82,9 @@ def add_category(request):
 
 @login_required
 def categories(request):
-    categories = Category.objects.annotate(
-        subcategories_count=Count('sub_category'),
-        products_count=Count('product')
+    categories = Category.objects.all().annotate(
+        products_count=Count('product'),
+        subcategories_count=Count('sub_category')
     ).order_by('-id')
 
     context = {
