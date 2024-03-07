@@ -32,7 +32,7 @@ class Sub_Category(models.Model):
     
 class Sub_In_Category(models.Model):
     Sub_Category = models.ForeignKey(Sub_Category,on_delete=models.CASCADE)
-    Name = models.CharField(max_length=100,unique=True)
+    Name = models.CharField(max_length=100)
     Reference = models.CharField(max_length=25,unique=True)
     Note = models.CharField(max_length=250,null=True)
 
