@@ -115,32 +115,46 @@
                 {% csrf_token %}
                 <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
                     <input type="hidden" name="requisition_id" value="{{ requisition.id }}">
-                    <div class="intro-y col-span-2 sm:col-span-2">
+                    <div class="intro-y col-span-12 sm:col-span-3">
                         <label for="input-wizard-2" class="form-label">Category</label>
-                        <select name="category" id="requisition-category" class="tom-select">
-                            <option value="">Search Category</option>
+                        <select name="category" id="new-m-cat" class="tom-select" required>
+                            <option value="">Select Category</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category }}</option>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <div class="intro-y col-span-3 sm:col-span-2">
+                    <div class="intro-y col-span-12 sm:col-span-3" style="display: none;" id="new-scat-div">
+                        <label for="input-wizard-2" class="form-label">Sub Category</label>
+                        <select name="sub_category" id="new-s-cat" class="form-control">
+                            <option value="">Select Sub Category</option>
+                        </select>
+                    </div>
+
+                    <div class="intro-y col-span-12 sm:col-span-3" style="display: none;" id="new-sicat-div">
+                        <label for="input-wizard-2" class="form-label">Sub In Category</label>
+                        <select name="sub_in_category" id="new-si-cat" class="form-control">
+                            <option value="">Select Sub In Category</option>
+                        </select>
+                    </div>
+
+                    <div class="intro-y col-span-3 sm:col-span-3">
                         <label for="input-wizard-2" class="form-label">Product Name</label>
                         <input name="name" type="text" class="form-control" placeholder="Enter product name" maxlength="250">
                     </div>
 
-                    <div class="intro-y col-span-2 sm:col-span-2">
+                    <div class="intro-y col-span-2 sm:col-span-3">
                         <label for="input-wizard-2" class="form-label">Unit</label>
                         <input name="unit" type="text" class="form-control" placeholder="Enter product unit" maxlength="50">
                     </div>
 
-                    <div class="intro-y col-span-2 sm:col-span-2">
+                    <div class="intro-y col-span-2 sm:col-span-3">
                         <label for="input-wizard-2" class="form-label">Quantity</label>
                         <input name="quantity" type="number" class="form-control" placeholder="Enter product unit" maxlength="50">
                     </div>
 
-                    <div class="intro-y col-span-2">
+                    <div class="intro-y col-span-3">
                         <label for="input-wizard-2" class="form-label">Remarks</label>
                         <input name="note" id="note" type="text" class="form-control" placeholder="Enter some note if required" maxlength="250">
                     </div>

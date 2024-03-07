@@ -89,13 +89,22 @@ def get_products(request):
 def add_requisition_item(request):
     requisition_id = request.POST.get('requisition_id')
     requisition = Requisition.objects.get(id=requisition_id)
-    product_id = request.POST.get('product_id')
-    product = Product.objects.get(id=product_id)
+
+    try:
+        product_id = request.POST.get('product_id')
+        product = Product.objects.get(id=product_id)
+    except:
+        messages.warning(request,'No Product Selected ... !')
+
     quantity = request.POST.get('quantity')
     note = request.POST.get('note')
 
     if request.method == 'POST':
-        Requisition_Item.objects.create(Requisition=requisition,Product=product,Quantity=quantity,Note=note)
+
+        try:
+            Requisition_Item.objects.create(Requisition=requisition,Product=product,Quantity=quantity,Note=note)
+        except Exception as exception:
+            messages.warning(request,exception)
     
         return redirect('requisition',reference=requisition.Reference)
 
@@ -116,7 +125,20 @@ def add_new_item(request):
     requisition = Requisition.objects.get(id=requisition_id)
 
     category_id = request.POST.get('category')
+    sub_category_id = request.POST.get('sub_category')
+    sub_in_category_id = request.POST.get('sub_in_category')
+
     category = Category.objects.get(id=category_id)
+
+    try:
+        sub_category = Sub_Category.objects.get(id=sub_category_id)
+    except:
+        sub_category = None
+
+    try:
+        sub_in_category = Sub_In_Category.objects.get(id=sub_in_category_id)
+    except:
+        sub_in_category = None
 
     name = request.POST.get('name')
     unit = request.POST.get('unit')
@@ -125,7 +147,7 @@ def add_new_item(request):
     note = request.POST.get('note')
 
     try:
-        product = Product.objects.create(Added_By=request.user,Added_IP=ip,Name=name,Reference=reference,Category=category,Unit=unit)
+        product = Product.objects.create(Added_By=request.user,Added_IP=ip,Name=name,Reference=reference,Category=category,Sub_Category=sub_category,Sub_In_Category=sub_in_category,Unit=unit,Note=note)
         Requisition_Item.objects.create(Requisition=requisition,Product=product,Quantity=quantity,Note=note)
     except Exception as exception:
         messages.warning(request,exception)

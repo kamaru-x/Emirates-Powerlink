@@ -113,4 +113,70 @@ $(document).ready(function(){
         })
     })
     // sub in category fetch start //
+
+    // ############################################################################################ //
+
+    // sub category fetch start //
+    $('#new-m-cat').on('change' , function(){
+        var cat_id = $('#new-m-cat').val()
+
+        $.ajax({
+            url : '/get-sub-categories/',
+            type : 'POST',
+            data : {'cat-id':cat_id},
+
+            success : function(response){
+
+                if(response.sub_categories){
+                    $('#new-scat-div').show()
+                }else{
+                    $('#new-scat-div').hide()
+                }
+
+                html = '<option value="">Search Sub Category</option>'
+
+                for (let i = 0; i < response.sub_categories.length; i++) {
+                    html += '<option value="'+response.sub_categories[i].id+'">'+response.sub_categories[i].Name+'</option>'
+                }
+
+                html += '<option value="None">None</option>'
+
+                $('#new-s-cat').html(html)
+            }
+        })
+    })
+    // sub category fetch end //
+
+    // sub in category fetch start //
+    $('#new-s-cat').on('change' , function(){
+        var cat_id = $('#new-s-cat').val()
+
+        $.ajax({
+            url : '/get-sub-in-categories/',
+            type : 'POST',
+            data : {'cat-id':cat_id},
+
+            success : function(response){
+
+                if(response.sub_in_categories){
+                    $('#new-sicat-div').show()
+                }else{
+                    $('#new-sicat-div').hide()
+                }
+
+                html = '<option value="">Search Sub Category</option>'
+
+                for (let i = 0; i < response.sub_in_categories.length; i++) {
+                    html += '<option value="'+response.sub_in_categories[i].id+'">'+response.sub_in_categories[i].Name+'</option>'
+                }
+
+                html += '<option value="None">None</option>'
+
+                $('#new-si-cat').html(html)
+            }
+        })
+    })
+    // sub in category fetch start //
+
+    // ############################################################################################ //
 })
