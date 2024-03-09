@@ -39,6 +39,10 @@ class LPO(models.Model):
     PO_Category = models.CharField(max_length=100,null=True)
     Q_Reference = models.CharField(max_length=25,null=True)
     Reference = models.CharField(max_length=50,null=True)
+    Address = models.CharField(max_length=255,null=True)
+    Telephone = models.CharField(max_length=25,null=True)
+    Email = models.EmailField(null=True)
+    Mobile = models.CharField(max_length=25,null=True)
     
     Payment_Terms = models.TextField(null=True)
     Delivery_Terms = models.TextField(null=True)

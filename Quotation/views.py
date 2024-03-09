@@ -158,18 +158,31 @@ def print_lpo(request,reference):
 
     categories = list(set(categories))
 
-    for categotry in categories:
-        products = items.filter(Item__Product__Category=categotry)
-        dict = {
-            'category' : categotry,
-            'products' : products
-        }
+    x = 1
+    sub_total = 0
 
-        data.append(dict)
+    for category in categories:
+        products = items.filter(Item__Product__Category=category)
+
+        sub_total += sum(product.Net for product in products)
+
+        category_dict = {
+            'cid': x,
+            'category': category,
+            'products': list(products)
+        }
+        data.append(category_dict)
+
+        x += 1
+
+    tax = sub_total * 0.5
 
     context = {
         'lpo' : lpo,
-        'data' : data
+        'data' : data,
+        'sub_total' : sub_total,
+        'tax' : tax,
+        'grand_total' : sub_total + tax
     }
     return render(request,'Dashboard/LPO/lpo.html',context)
 
@@ -182,7 +195,21 @@ def edit_lpo(request,id):
     items = QuotationItem.objects.filter(Quotation=quotation)
 
     if request.method == 'POST':
-        pass
+        lpo.PO_NO = request.POST.get('po_no')
+        lpo.TRN = request.POST.get('trn_number')
+        lpo.Address = request.POST.get('address')
+        lpo.PO_Date = request.POST.get('po_date')
+        lpo.PO_Category = request.POST.get('po_category')
+        lpo.Telephone = request.POST.get('telephone')
+        lpo.Contact = request.POST.get('contact_name')
+        lpo.Email = request.POST.get('email')
+        lpo.Mobile = request.POST.get('mobile')
+        lpo.Payment_Terms = request.POST.get('payment_terms')
+        lpo.Delivery_Terms = request.POST.get('delivery_terms')
+        lpo.Terms_Condetions = request.POST.get('terms_condetion')
+        lpo.save()
+        
+        return redirect('edit-lpo',id=lpo.id)
 
     context = {
         'lpo' : lpo,

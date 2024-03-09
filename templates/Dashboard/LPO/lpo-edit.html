@@ -31,22 +31,22 @@
         <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
             <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">TRN Number</label>
-                <input value="{{ lpo.TRN }}" name="name" type="text" class="form-control" placeholder="Enter TRN Number" required maxlength="100">
+                <input value="{{ lpo.TRN }}" name="trn_number" type="text" class="form-control" placeholder="Enter TRN Number" maxlength="100">
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">Address</label>
-                <input value="{{ lpo.Address }}" name="name" type="text" class="form-control" placeholder="Enter TRN Number" required maxlength="100">
+                <input value="{{ lpo.Address }}" name="address" type="text" class="form-control" placeholder="Enter Address" maxlength="100">
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">PO DATE</label>
-                <input name="" value="{{ lpo.PO_Date | date:'Y-m-d' }}" type="date" class="form-control">
+                <input name="po_date" value="{{ lpo.PO_Date | date:'Y-m-d' }}" type="date" class="form-control">
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">PO Category</label>
-                <input name="" value="{{ lpo.PO_Category }}" type="text" class="form-control" placeholder="Enter PO Category">
+                <input name="po_category" value="{{ lpo.PO_Category }}" type="text" class="form-control" placeholder="Enter PO Category">
             </div>
 
             <div class="col-span-12">
@@ -54,23 +54,23 @@
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-3">
-                <label for="input-wizard-2" class="form-label">Tel No</label>
-                <input name="" value="{{ lpo.Tel_No}}" type="text" class="form-control" placeholder="Enter Telephone Number">
+                <label for="input-wizard-2" class="form-label">Telephone Number</label>
+                <input name="telephone" value="{{ lpo.Telephone}}" type="text" class="form-control" placeholder="Enter Telephone Number">
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-3">
-                <label for="input-wizard-2" class="form-label">Contact</label>
-                <input name="" value="{{ lpo.Contact }}" type="text" class="form-control" placeholder="Enter Contact Here">
+                <label for="input-wizard-2" class="form-label">Contact Name</label>
+                <input name="contact_name" value="{{ lpo.Contact }}" type="text" class="form-control" placeholder="Enter Contact Here">
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">Email</label>
-                <input name="" value="{{ lpo.Email }}" type="email" class="form-control" placeholder="Enter Contact Email">
+                <input name="email" value="{{ lpo.Email }}" type="email" class="form-control" placeholder="Enter Contact Email">
             </div>
             
             <div class="intro-y col-span-12 sm:col-span-3">
                 <label for="input-wizard-2" class="form-label">Mobile</label>
-                <input name="" value="{{ lpo.Mobile }}" type="text" class="form-control" placeholder="Enter Contact Mobile">
+                <input name="mobile" value="{{ lpo.Mobile }}" type="text" class="form-control" placeholder="Enter Contact Mobile">
             </div>
         </div>
 
@@ -118,17 +118,17 @@
         <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5 pb-10"> 
             <div class="intro-y col-span-12 sm:col-span-12">
                 <label for="input-wizard-2" class="form-label">Payment Terms</label>
-                <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+                <textarea name="payment_terms" id="" cols="30" rows="5" class="form-control">{{ lpo.Payment_Terms }}</textarea>
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-12">
                 <label for="input-wizard-2" class="form-label">Delivery Terms</label>
-                <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+                <textarea name="delivery_terms" id="" cols="30" rows="5" class="form-control">{{ lpo.Delivery_Terms }}</textarea>
             </div>
 
             <div class="intro-y col-span-12 sm:col-span-12">
                 <label for="input-wizard-2" class="form-label">Terms and Condetions</label>
-                <textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>
+                <textarea name="terms_condetion" id="" cols="30" rows="5" class="form-control">{{ lpo.Terms_Condetions }}</textarea>
             </div>
 
             <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">

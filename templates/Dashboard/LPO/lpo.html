@@ -40,19 +40,19 @@
                     <div class="cs-invoice_left">
                         <p class="cs-primary_color">Name : {{ lpo.Quotation.Requisition.Project.Project_Name }}</p>
                         <p class="cs-primary_color">TRN : {{ lpo.TRN }} </p>
-                        <p class="cs-primary_color">Address : Al Mantaqah As Sina'iyah 1 St, Abu Dhabi, United Arab Emirates </p>
-                        <p class="cs-primary_color">Tel No : +97125866932</p>
-                        <p class="cs-primary_color">Contact : Mr.Shiyas</p>
-                        <p class="cs-primary_color">Contact Email : Sales@sasoverseastrading.com</p>
-                        <p class="cs-primary_color">Contact Mobile : +971 58 940 0690</p>
+                        <p class="cs-primary_color">Address : {{ lpo.Address }} </p>
+                        <p class="cs-primary_color">Tel No : {{ lpo.Telephone }}</p>
+                        <p class="cs-primary_color">Contact : {{ lpo.Contact }}</p>
+                        <p class="cs-primary_color">Contact Email : {{ lpo.Email }}</p>
+                        <p class="cs-primary_color">Contact Mobile : {{ lpo.Mobile }}</p>
                     </div>
 
                     <div class="cs-invoice_right cs-text_right">
-                        <p class="cs-primary_color">P.O. Date : 19/09/2023</p>
-                        <p class="cs-primary_color">P.O Category : L.P.O</p>
-                        <p class="cs-primary_color">Vendor Quotation ref : Proposal</p>
-                        <p class="cs-primary_color">Quotation Date  : 19/09/2023</p>
-                        <p class="cs-primary_color">Requisition number  : RQ/013 </p>
+                        <p class="cs-primary_color">P.O. Date : {{ lpo.PO_Date }}</p>
+                        <p class="cs-primary_color">P.O Category : {{ lpo.PO_Category }}</p>
+                        <p class="cs-primary_color">Vendor Quotation ref : {{ lpo.Reference }}</p>
+                        <p class="cs-primary_color">Quotation Date  : {{ lpo.Quotation.Date }}</p>
+                        <p class="cs-primary_color">Requisition number  : {{ lpo.Quotation.Requisition }} </p>
                         <p class="cs-primary_color">Currency  : AED </p>
                     </div>
 
@@ -81,7 +81,7 @@
 
                                         {% for item in d.products %}
                                             <tr>
-                                                <td class="cs-text_center">{{ forloop.counter }}</td>
+                                                <td class="cs-text_center">{{ d.cid }}.{{ forloop.counter }}</td>
                                                 <td class="cs-text_center">{{ item.Item.Product }}</td>
                                                 <td class="cs-text_center">{{ item.Item.Product.Unit }}</td>
                                                 <td class="cs-text_center">{{ item.Item.Quantity }}</td>
@@ -94,7 +94,7 @@
 
                                     <tr class="cs-text_right">
                                         <td colspan="5">Amount :</td>
-                                        <td class="cs-text_center">213,171.20</td>
+                                        <td class="cs-text_center">{{ sub_total | floatformat:2 }}</td>
                                     </tr>
                                     <tr class="cs-text_right">
                                         <td colspan="5">Value Added Tax % :</td>
@@ -102,11 +102,11 @@
                                     </tr>
                                     <tr class="cs-text_right">
                                         <td colspan="5">Value Added Tax :</td>
-                                        <td class="cs-text_center">10658.56</td>
+                                        <td class="cs-text_center">{{ tax | floatformat:2 }}</td>
                                     </tr>
                                     <tr class="cs-text_right">
                                         <td colspan="5">Gross Amount :</td>
-                                        <td class="cs-text_center">223,829.76</td>
+                                        <td class="cs-text_center">{{ grand_total | floatformat:2 }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="6">
@@ -121,9 +121,9 @@
                 </div>
 
                 <div class="cs-mt20">
-                    <p><b>Payment Terms : </b>To be discussed</p>
-                    <p><b>Delivery Terms : </b>To be discussed</p>
-                    <p><b>Contact : </b>Amitha Ranjith</p>
+                    <p><b>Payment Terms : </b>{{ lpo.Payment_Terms }}</p>
+                    <p><b>Delivery Terms : </b>{{ lpo.Delivery_Terms }}</p>
+                    <p><b>Contact : </b>{{ lpo.Contact }}</p>
                     <p><b>Delivery Location : </b>Site</p>
                     <p><b>Remarks : </b>RQ/013</p>
                 </div>
