@@ -166,7 +166,7 @@ def sub_categories(request):
 
 @login_required
 def add_sub_category(request):
-    categories = Category.objects.all()
+    categories = Category.objects.all().order_by('-id')
     last_category = Sub_Category.objects.last()
 
     if last_category:

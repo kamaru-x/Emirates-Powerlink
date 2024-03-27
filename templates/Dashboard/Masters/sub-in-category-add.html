@@ -31,7 +31,7 @@
                 <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
                     <div class="intro-y col-span-12 sm:col-span-4">
                         <label for="input-wizard-2" class="form-label">Select Category</label>
-                        <select name="category" id="m-cat" class="form-control">
+                        <select name="category" id="m-cat" class="form-control" required>
                             <option value="">Select Category</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category }}</option>
@@ -41,7 +41,7 @@
 
                     <div class="intro-y col-span-12 sm:col-span-4">
                         <label for="input-wizard-2" class="form-label">Select Category</label>
-                        <select name="sub_category" id="s-cat" class="form-control">
+                        <select name="sub_category" id="s-cat" class="form-control" required>
                             <option value="">Select Sub Category</option>
                         </select>
                     </div>

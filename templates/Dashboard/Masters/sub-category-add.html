@@ -31,7 +31,7 @@
                 <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5"> 
                     <div class="intro-y col-span-12 sm:col-span-6">
                         <label for="input-wizard-2" class="form-label">Select Category</label>
-                        <select name="category" id="" class="tom-select">
+                        <select name="category" id="" class="tom-select" required>
                             <option value="">Search Category</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category }}</option>
