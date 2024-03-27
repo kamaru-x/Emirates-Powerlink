@@ -212,10 +212,14 @@ def edit_sub_category(request,scid):
         sub_category.Category = category
         sub_category.Note = request.POST.get('note')
 
-        sub_category.save()
-        messages.success(request,'Sub Category Edited successfully ... !')
-
-        return redirect('sub-categories')
+        try:
+            sub_category.save()
+            messages.success(request,'Sub Category Edited successfully ... !')
+            return redirect('sub-categories')
+        
+        except Exception as exception:
+            messages.success(request,exception)
+            return redirect('edit-sub-category',scid=sub_category.id)
 
     context = {
         'categories' : categories,
@@ -330,9 +334,14 @@ def edit_sub_in_category(request,sicid):
         category.Name = request.POST.get('name')
         category.Note = request.POST.get('note')
 
-        category.save()
-        messages.success(request,'Sub In Category Edited Successfully ... !')
-        return redirect('sub-in-categories')
+        try:
+            category.save()
+            messages.success(request,'Sub In Category Edited Successfully ... !')
+            return redirect('sub-in-categories')
+        
+        except Exception as exception:
+            messages.success(request,exception)
+            return redirect('edit-sub-in-category',sicid=category.id)
     
     context = {
         "category" : category,
